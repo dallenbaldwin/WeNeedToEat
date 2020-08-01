@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>We Need to Eat</title>
+      <title>Food Options</title>
       <!-- Required meta tags -->
       <meta charset="utf-8" />
       <meta
@@ -21,27 +21,19 @@
       <div class="container">
          <div class="row">
             <div class="col-12">
-               <div class="jumbotron">
-                  <h1 class="display-3">We really need to eat</h1>
-                  <p class="lead">Where should we eat?</p>
-                  <hr class="my-2" />
-                  <p class="lead">
-                     <a
-                        class="btn btn-primary btn-lg"
-                        href="src/html/options.html"
-                        role="button"
-                        >What are the options?</a
-                     >
-                     <button
-                        type="button"
-                        class="btn btn-primary btn-lg"
-                        onclick="decideToEat()"
-                     >
-                        Tell us where to eat already!
-                     </button>
-                  </p>
-               </div>
+               <a
+                  name="homeBtn"
+                  id="homeBtn"
+                  class="btn btn-primary"
+                  href="../../index.html"
+                  role="button"
+                  >Go Home</a
+               >
             </div>
+         </div>
+         <div class="row">
+            <div class="col-4">Add an option</div>
+            <div class="col-8">Current Options</div>
          </div>
       </div>
       <!-- Optional JavaScript -->
@@ -61,6 +53,5 @@
          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
          crossorigin="anonymous"
       ></script>
-      <script src="src/js/index.js"></script>
    </body>
 </html>
