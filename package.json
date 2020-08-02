@@ -17,6 +17,7 @@
    },
    "homepage": "https://github.com/dallenbaldwin/WeNeedToEat#readme",
    "dependencies": {
+      "jquery": "^3.5.1",
       "parcel": "^1.12.4"
    },
    "devDependencies": {
