@@ -68,8 +68,18 @@
          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
          crossorigin="anonymous"
       ></script>
-      <script src="../js/index.js"></script>
       <script>
+         function decideToEat() {
+            type = $('#typeBtn').text().trim().toLowerCase();
+            alert(`We're gonna ${type}!`);
+         }
+
+         function changeType() {
+            btn = $('#typeBtn');
+            if (btn.text().trim() === 'Eat in') btn.text('Eat out');
+            else if (btn.text().trim() === 'Eat out') btn.text('Eat in');
+         }
+
          $(document).ready(() => {
             $('#decideBtn').click(decideToEat);
             $('#typeBtn').click(changeType);

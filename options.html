@@ -21,7 +21,11 @@
          integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
          crossorigin="anonymous"
       />
-      <link rel="stylesheet" href="../css/options.css" />
+      <style>
+         .c-clickable {
+            cursor: pointer;
+         }
+      </style>
    </head>
    <body>
       <div class="container mt-4">
@@ -136,8 +140,44 @@
          integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
          crossorigin="anonymous"
       ></script>
-      <script src="../js/options.js"></script>
       <script>
+         function addMealOption() {
+            let row = {
+               name: $('#mealInput').val(),
+               type: $('#typeSelect').val(),
+               tags: $('#tagInput')
+                  .val()
+                  .split(',')
+                  .map(x => x.trim()),
+            };
+            if (row.name === '' || row.type === '') return;
+            window.localStorage.setItem(row.name, JSON.stringify(row));
+            location.reload();
+         }
+
+         function clearLocalStorage() {
+            if (
+               confirm(
+                  'This will remove all your meal ideas. Are you sure you want to continue?'
+               )
+            )
+               window.localStorage.clear();
+            location.reload();
+         }
+
+         function loadTable() {
+            let db = Object.values(window.localStorage).map(x => JSON.parse(x));
+            let table = $('#mealsTable');
+            table.empty();
+            db.forEach(row => {
+               table.append(`<tr class="c-clickable">
+         <td>${row.name}</td>
+         <td>${row.type === 'in' ? 'Cook at Home' : 'Restaurant'}</td>
+         <td>${row.tags}</td>
+      </tr>`);
+            });
+         }
+
          $(document).ready(() => {
             loadTable();
             $('#resetBtn').click(clearLocalStorage);
