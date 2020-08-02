@@ -4,7 +4,7 @@
    "description": "My wife and I have a hard time picking where we're going to eat when we're too lazy to make food.",
    "main": "index.js",
    "scripts": {
-      "build": "parcel build *.html"
+      "build": "parcel build ./src/html/index.html"
    },
    "repository": {
       "type": "git",
