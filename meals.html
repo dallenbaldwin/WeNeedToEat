@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Food Options</title>
+      <title>Meal Options</title>
       <!-- Required meta tags -->
       <meta charset="utf-8" />
       <meta
@@ -25,10 +25,121 @@
          .c-clickable {
             cursor: pointer;
          }
+         .c-tag-pill {
+            background-color: #e9ecef;
+            border: none;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 4px 2px;
+            border-radius: 16px;
+         }
+         .c-tag-pill-delete {
+            cursor: pointer;
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1;
+            text-shadow: 0 1px 0 #fff;
+            opacity: 0.5;
+         }
       </style>
    </head>
    <body>
       <div class="container mt-4">
+         <!-- clearDBModal -->
+         <div
+            class="modal fade"
+            id="clearDBModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="clearDBModalLabel"
+            aria-hidden="true"
+         >
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="clearDBModalLabel">WARNING!</h5>
+                     <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                     >
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     This will remove all your meal ideas. Are you sure you want to
+                     continue?
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cancel
+                     </button>
+                     <button type="button" class="btn btn-danger">Yes</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- editRecordModal -->
+         <div
+            class="modal fade"
+            id="editRecordModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="editRecordModalLabel"
+            aria-hidden="true"
+         >
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="editRecordModalLabel">Edit this Meal</h5>
+                     <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                     >
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <div class="form-group">
+                        <label for="modalMealNameInput">Meal Name</label>
+                        <input
+                           type="text"
+                           name="modalMealNameInput"
+                           id="modalMealNameInput"
+                           class="form-control"
+                           aria-describedby="modalMealNameHelp"
+                        />
+                        <small id="modalMealNameHelp" class="text-muted"
+                           >Type in the new meal name</small
+                        >
+                     </div>
+                     <div class="form-group">
+                        <input
+                           type="text"
+                           name="modalAddTagInput"
+                           id="modalAddTagInput"
+                           class="form-control"
+                           aria-describedby="modalAddTagHelp"
+                        />
+                        <small id="modalAddTagHelp" class="text-muted"
+                           >Type in a new Tag</small
+                        >
+                     </div>
+                     <div id="editModalTagList"></div>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                     </button>
+                     <button type="button" class="btn btn-warning">Delete</button>
+                     <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+               </div>
+            </div>
+         </div>
          <div class="row">
             <div class="col-1">
                <div class="col-12">
@@ -108,7 +219,6 @@
                   <thead>
                      <tr>
                         <th>Meal</th>
-                        <th>Type</th>
                         <th>Tags</th>
                      </tr>
                   </thead>
@@ -142,27 +252,30 @@
       ></script>
       <script>
          function addMealOption() {
+            if ($('#mealInput').val() === '' || $('#typeSelect').val() === '') return;
+
+            let type = $('#typeSelect').val();
+            let tags = $('#tagInput')
+               .val()
+               .split(',')
+               .map(x => x.trim());
+            tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
+
             let row = {
                name: $('#mealInput').val(),
-               type: $('#typeSelect').val(),
-               tags: $('#tagInput')
-                  .val()
-                  .split(',')
-                  .map(x => x.trim()),
+               tags: tags,
             };
-            if (row.name === '' || row.type === '') return;
+
             window.localStorage.setItem(row.name, JSON.stringify(row));
             location.reload();
          }
 
          function clearLocalStorage() {
-            if (
-               confirm(
-                  'This will remove all your meal ideas. Are you sure you want to continue?'
-               )
-            )
+            $('#clearDBModal').modal('toggle');
+            if (false) {
                window.localStorage.clear();
-            location.reload();
+               location.reload();
+            }
          }
 
          function loadTable() {
@@ -171,10 +284,29 @@
             table.empty();
             db.forEach(row => {
                table.append(`<tr class="c-clickable">
-         <td>${row.name}</td>
-         <td>${row.type === 'in' ? 'Cook at Home' : 'Restaurant'}</td>
-         <td>${row.tags}</td>
-      </tr>`);
+            <td>${row.name}</td>
+            <td>${row.tags.map(x => ` ${x}`)}</td>
+         </tr>`);
+            });
+         }
+
+         function editRow() {
+            $('#editRecordModal').modal('toggle');
+            let mealData = JSON.parse(
+               window.localStorage.getItem($(this).children()[0].innerText)
+            );
+            $('#modalMealNameInput').attr('placeholder', mealData.name);
+            let list = $('#editModalTagList');
+            list.empty();
+            mealData.tags.forEach(tag => {
+               $('#editModalTagList').append(`<li class="c-tag-pill">
+                  ${tag}
+                  ${
+                     tag === 'Restaurant' || tag === 'Cook at Home'
+                        ? ''
+                        : `<span class="c-tag-pill-delete">&times;</span>`
+                  }
+               </li>`);
             });
          }
 
@@ -182,10 +314,16 @@
             loadTable();
             $('#resetBtn').click(clearLocalStorage);
             $('#doneBtn').click(addMealOption);
-            $('tr').click(function () {
-               console.log('clicked!');
-            });
+            $('tr').click(editRow);
          });
       </script>
    </body>
 </html>
+
+<!-- TODO: Edit meal name
+TODO: Delete existing tags per meal
+TODO: Add new tags in the edit modal
+TODO: Delete meal option
+TODO: Save edited meal options
+TODO: Start from Scratch Button needs to clear meal options
+-->

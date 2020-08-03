@@ -23,30 +23,47 @@
             <div class="col-12">
                <div class="jumbotron">
                   <h1 class="display-3">We really need to eat</h1>
-                  <p class="lead">What should we eat?</p>
-                  <hr class="mb-2" />
                   <p class="lead">
-                     <a class="btn btn-primary btn-lg" href="./options.html" role="button"
+                     What should we eat?
+                     <a
+                        class="btn btn-primary float-right"
+                        href="./meals.html"
+                        role="button"
                         >What are the options?</a
                      >
-                     <button id="typeBtn" type="button" class="btn btn-primary btn-lg">
+                  </p>
+                  <hr class="mb-2" />
+
+                  <div class="mt-1">
+                     <button id="eatInBtn" type="button" class="btn btn-primary btn-lg">
                         Eat in
                      </button>
-                     <button id="decideBtn" type="button" class="btn btn-primary btn-lg">
-                        Tell us what to eat already!
+                     <button
+                        id="eatOutBtn"
+                        type="button"
+                        class="btn btn-outline-primary btn-lg"
+                     >
+                        Eat out
                      </button>
-                  </p>
-                  <div class="form-group">
+                  </div>
+                  <div class="form-group mt-1">
                      <label for="tagInput">Tags</label>
                      <input
                         type="text"
                         name="tagInput"
                         id="tagInput"
                         class="form-control"
+                        placeholder="Type in a tag"
                         aria-describedby="tagInputHelp"
                      />
-                     <small id="tagInputHelp" class="text-muted">Type in a tag</small>
+                     <small id="tagInputHelp" class="text-muted d-none"
+                        >Type in a tag</small
+                     >
                   </div>
+                  <button id="decideBtn" type="button" class="btn btn-primary btn-lg">
+                     Tell us what to eat already!
+                  </button>
+                  <h1 class="display-4" id="resultsArea"></h1>
                </div>
             </div>
          </div>
@@ -68,22 +85,54 @@
          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
          crossorigin="anonymous"
       ></script>
+      <script
+         src="https://cdn.jsdelivr.net/npm/lodash@4.17.19/lodash.min.js"
+         integrity="sha256-Jvh9+A4HNbbWsWl1Dw7kAzNsU3y8elGIjLnUSUNMtLg="
+         crossorigin="anonymous"
+      ></script>
       <script>
-         function decideToEat() {
-            type = $('#typeBtn').text().trim().toLowerCase();
-            alert(`We're gonna ${type}!`);
+         let pageData = { innout: 'in', tags: {} };
+
+         function addTag() {
+            let input = $('#tagInput');
+            pageData.tags[input.val()] = input.val();
+            console.log(pageData.tags);
+            input.val('');
          }
 
-         function changeType() {
-            btn = $('#typeBtn');
-            if (btn.text().trim() === 'Eat in') btn.text('Eat out');
-            else if (btn.text().trim() === 'Eat out') btn.text('Eat in');
+         function decideToEat() {
+            type = $('#typeBtn').text().trim().toLowerCase();
+            let db = Object.values(window.localStorage);
+            console.log(db);
+            $('#resultsArea').empty().append(pageData.innout);
+         }
+
+         function eatIn() {
+            $('#eatInBtn').removeClass('btn-outline-primary').addClass('btn-primary');
+            $('#eatOutBtn').removeClass('btn-primary').addClass('btn-outline-primary');
+            pageData.innout = 'in';
+         }
+
+         function eatOut() {
+            $('#eatOutBtn').removeClass('btn-outline-primary').addClass('btn-primary');
+            $('#eatInBtn').removeClass('btn-primary').addClass('btn-outline-primary');
+            pageData.innout = 'out';
          }
 
          $(document).ready(() => {
             $('#decideBtn').click(decideToEat);
-            $('#typeBtn').click(changeType);
+            $('#eatInBtn').click(eatIn);
+            $('#eatOutBtn').click(eatOut);
+            $('#tagInput').change(addTag);
          });
       </script>
    </body>
 </html>
+
+<!--  TODO: Clicking "Eat in" should filter out Restaurants
+TODO: Clicking "Eat out" should filter out home cooked meals
+TODO: The tags input should add pills containing the desired tag between the submit button and the tag input.
+TODO: Tags should be able to be removed
+TODO: Clicking "Tell us what to eat already!" should give you a random meal based on your filter and tags
+TODO: Debounce new tags instead of making the user hit enter/leave the text input area
+-->
