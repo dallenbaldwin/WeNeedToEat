@@ -18,6 +18,14 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 -  [ ] Tags should be able to be removed
 -  [ ] Clicking "Tell us what to eat already!" should give you a random meal based on your filter and tags
 
+<!--  TODO: Clicking "Eat in" should filter out Restaurants
+TODO: Clicking "Eat out" should filter out home cooked meals
+TODO: The tags input should add pills containing the desired tag between the submit button and the tag input.
+TODO: Tags should be able to be removed
+TODO: Clicking "Tell us what to eat already!" should give you a random meal based on your filter and tags
+TODO: Debounce new tags instead of making the user hit enter/leave the text input area
+-->
+
 ### Meals Page
 
 -  [ ] Edit meal name
@@ -25,11 +33,21 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 -  [ ] Add new tags in the edit modal
 -  [ ] Delete meal option
 -  [ ] Save edited meal options
--  [ ] Start from Scratch Button needs to clear meal options
+-  [ x ] Start from Scratch Button needs to clear meal options
+
+<!-- TODO: Delete existing tags per meal
+TODO: Add new tags in the edit modal
+TODO: Delete meal option
+TODO: Save edited meal options
+-->
 
 ## Bugs
 
-Nothing to report! Yet...
+-  [ ] Meals without tags have a leading comma
+-  [ ] That leading comma creates an empty tag in the edit modal
+
+<!-- BUG: tagless entries have a leading comma -->
+<!-- BUG: That leading comma creates an empty tag in the edit modal -->
 
 ## Enhancements
 
