@@ -90,35 +90,8 @@
          integrity="sha256-Jvh9+A4HNbbWsWl1Dw7kAzNsU3y8elGIjLnUSUNMtLg="
          crossorigin="anonymous"
       ></script>
+      <script src="./index.js"></script>
       <script>
-         let pageData = { innout: 'in', tags: {} };
-
-         function addTag() {
-            let input = $('#tagInput');
-            pageData.tags[input.val()] = input.val();
-            console.log(pageData.tags);
-            input.val('');
-         }
-
-         function decideToEat() {
-            type = $('#typeBtn').text().trim().toLowerCase();
-            let db = Object.values(window.localStorage);
-            console.log(db);
-            $('#resultsArea').empty().append(pageData.innout);
-         }
-
-         function eatIn() {
-            $('#eatInBtn').removeClass('btn-outline-primary').addClass('btn-primary');
-            $('#eatOutBtn').removeClass('btn-primary').addClass('btn-outline-primary');
-            pageData.innout = 'in';
-         }
-
-         function eatOut() {
-            $('#eatOutBtn').removeClass('btn-outline-primary').addClass('btn-primary');
-            $('#eatInBtn').removeClass('btn-primary').addClass('btn-outline-primary');
-            pageData.innout = 'out';
-         }
-
          $(document).ready(() => {
             $('#decideBtn').click(decideToEat);
             $('#eatInBtn').click(eatIn);
@@ -128,11 +101,3 @@
       </script>
    </body>
 </html>
-
-<!--  TODO: Clicking "Eat in" should filter out Restaurants
-TODO: Clicking "Eat out" should filter out home cooked meals
-TODO: The tags input should add pills containing the desired tag between the submit button and the tag input.
-TODO: Tags should be able to be removed
-TODO: Clicking "Tell us what to eat already!" should give you a random meal based on your filter and tags
-TODO: Debounce new tags instead of making the user hit enter/leave the text input area
--->
