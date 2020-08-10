@@ -41,6 +41,14 @@
             text-shadow: 0 1px 0 #fff;
             opacity: 0.5;
          }
+         .c-start-over {
+            float: right;
+         }
+         @media screen and (max-width: 450px) {
+            .c-start-over {
+               float: none;
+            }
+         }
       </style>
    </head>
    <body>
@@ -119,6 +127,7 @@
                         >
                      </div>
                      <div class="form-group">
+                        <label for="modalAddTagInput">Tags</label>
                         <input
                            type="text"
                            name="modalAddTagInput"
@@ -127,7 +136,7 @@
                            aria-describedby="modalAddTagHelp"
                         />
                         <small id="modalAddTagHelp" class="text-muted"
-                           >Type in a new Tag</small
+                           >Type in a new tag or comma separated list of tags</small
                         >
                      </div>
                      <div id="editModalTagList"></div>
@@ -147,20 +156,23 @@
             </div>
          </div>
          <div class="row">
-            <div class="col-1">
-               <div class="col-12">
-                  <a
-                     name="homeBtn"
-                     id="homeBtn"
-                     class="btn btn-primary"
-                     href="./index.html"
-                     role="button"
-                     ><i class="fa fa-home" aria-hidden="true"></i
-                  ></a>
+            <div class="col-sm-5">
+               <div class="row">
+                  <div class="col-sm-2">
+                     <a
+                        name="homeBtn"
+                        id="homeBtn"
+                        class="btn btn-primary mt-2 mb-2"
+                        href="./index.html"
+                        role="button"
+                        ><i class="fa fa-home" aria-hidden="true"></i
+                     ></a>
+                  </div>
+                  <div class="col-sm-10">
+                     <h1>Add a Meal</h1>
+                  </div>
                </div>
-            </div>
-            <div class="col-4">
-               <h1>Add a Meal</h1>
+
                <div class="form-group">
                   <label for="mealInput">Meal Name</label>
                   <input
@@ -207,29 +219,30 @@
                </div>
                <button id="doneBtn" type="button" class="btn btn-primary">Done</button>
             </div>
-            <div class="col-7">
+            <div class="col-sm-7">
                <div class="row">
-                  <div class="col-6"><h1>Meals</h1></div>
-                  <div class="col-6">
+                  <div class="col-sm-6"><h1>Meals</h1></div>
+                  <div class="col-sm-6">
                      <button
                         id="resetBtn"
                         type="button"
-                        class="btn btn-warning mt-2"
-                        style="float: right;"
+                        class="btn btn-warning mb-2 mt-2 c-start-over"
                      >
-                        Start From Scratch
+                        Start Over
                      </button>
                   </div>
                </div>
-               <table class="table table-hover">
-                  <thead>
-                     <tr>
-                        <th>Meal</th>
-                        <th>Tags</th>
-                     </tr>
-                  </thead>
-                  <tbody id="mealsTable"></tbody>
-               </table>
+               <div class="col-sm-12">
+                  <table class="table table-hover">
+                     <thead>
+                        <tr>
+                           <th>Meal</th>
+                           <th>Tags</th>
+                        </tr>
+                     </thead>
+                     <tbody id="mealsTable"></tbody>
+                  </table>
+               </div>
             </div>
          </div>
       </div>
@@ -259,19 +272,17 @@
       <script>
          function addMealOption() {
             if ($('#mealInput').val() === '' || $('#typeSelect').val() === '') return;
-
             let type = $('#typeSelect').val();
             let tags = $('#tagInput')
                .val()
                .split(',')
-               .map(x => x.trim());
+               .map(x => x.trim())
+               .filter(x => x.length > 0);
             tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
-
             let row = {
                name: $('#mealInput').val(),
                tags: tags,
             };
-
             window.localStorage.setItem(row.name, JSON.stringify(row));
             location.reload();
          }
@@ -298,9 +309,30 @@
             db.forEach(row => {
                table.append(`<tr class="c-clickable">
                   <td>${row.name}</td>
-                  <td>${row.tags.map(x => ` ${x}`)}</td>
+                  <td>${row.tags.join(', ')}</td>
                </tr>`);
             });
+         }
+
+         function pillTML(tag) {
+            if (tag.length === 0) return;
+            return `<li class="c-tag-pill">
+               <span class="c-tag-pill-data">${tag}</span>
+               ${
+                  tag === 'Restaurant' || tag === 'Cook at Home'
+                     ? ''
+                     : `<span class="c-tag-pill-delete">&times;</span>`
+               }
+            </li>`;
+         }
+
+         function addTag() {
+            let newTags = $('#modalAddTagInput').val().split(',');
+            newTags.forEach(tag => {
+               $('#editModalTagList').append(pillTML(tag));
+            });
+            $('.c-tag-pill-delete').click(killPill);
+            $('#modalAddTagInput').val('');
          }
 
          function killPill() {
@@ -316,14 +348,7 @@
             let list = $('#editModalTagList');
             list.empty();
             mealData.tags.forEach(tag => {
-               $('#editModalTagList').append(`<li class="c-tag-pill">
-                  <span class="c-tag-pill-data">${tag}</span>
-                  ${
-                     tag === 'Restaurant' || tag === 'Cook at Home'
-                        ? ''
-                        : `<span class="c-tag-pill-delete">&times;</span>`
-                  }
-               </li>`);
+               $('#editModalTagList').append(pillTML(tag));
             });
             $('.c-tag-pill-delete').click(killPill);
          }
@@ -355,6 +380,7 @@
             $('#doneBtn').click(addMealOption);
             $('tr').click(editRow);
             $('#saveMealBtn').click(saveEdits);
+            $('#modalAddTagInput').change(addTag);
          });
       </script>
    </body>
