@@ -14,17 +14,16 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 
 -  [ ] Clicking "Eat in" should filter out Restaurants
 -  [ ] Clicking "Eat out" should filter out home cooked meals
--  [ ] The tags input should add pills containing the desired tag between the submit button and the tag input.
--  [ ] Tags should be able to be removed
+-  [x] The tags input should add pills containing the desired tag between the submit button and the tag input.
+-  [x] Tags should be able to be removed
 -  [ ] Clicking "Tell us what to eat already!" should give you a random meal based on your filter and tags
--  [ ] The home page should remember your options until you get a meal per session
+-  [x] The home page should remember your eating option until you get a meal per session
+-  [ ] The home page should remember your tags until you get a meal per session
 
 <!--  TODO: Clicking "Eat in" should filter out Restaurants
 TODO: Clicking "Eat out" should filter out home cooked meals
-TODO: The tags input should add pills containing the desired tag between the submit button and the tag input.
-TODO: Tags should be able to be removed
 TODO: Clicking "Tell us what to eat already!" should give you a random meal based on your filter and tags
-TODO: Debounce new tags instead of making the user hit enter/leave the text input area
+TODO: add tags to session storage
 -->
 
 ### Meals Page
