@@ -40,7 +40,7 @@ TODO: Debounce new tags instead of making the user hit enter/leave the text inpu
 
 ## Bugs
 
--  [ ] Netlify isn't properly configured to deal with my external .js files
+-  [ x ] Netlify isn't properly configured to deal with my external .js files
 -  [ ] Meals without tags have a leading comma
 -  [ ] That leading comma creates an empty tag in the edit modal
 
