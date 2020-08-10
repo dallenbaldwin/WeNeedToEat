@@ -21,8 +21,7 @@
             cursor: pointer;
          }
          .c-tag-pill {
-            background-color: #e9ecef;
-            border: none;
+            background-color: #ffffff;
             padding: 10px 20px;
             display: inline-block;
             margin: 4px 2px;
@@ -36,6 +35,14 @@
             text-shadow: 0 1px 0 #fff;
             opacity: 0.5;
          }
+         .c-options {
+            float: right;
+         }
+         @media screen and (max-width: 450px) {
+            .c-options {
+               float: none;
+            }
+         }
       </style>
    </head>
    <body>
@@ -47,7 +54,7 @@
                   <p class="lead">
                      What should we eat?
                      <a
-                        class="btn btn-primary float-right"
+                        class="btn btn-primary c-options"
                         href="./meals.html"
                         role="button"
                         >What are the options?</a
@@ -59,14 +66,11 @@
                      <button id="eatInBtn" type="button" class="btn btn-primary btn-lg">
                         Eat in
                      </button>
-                     <button
-                        id="eatOutBtn"
-                        type="button"
-                        class="btn btn-outline-primary btn-lg"
-                     >
+                     <button id="eatOutBtn" type="button" class="btn btn-primary btn-lg">
                         Eat out
                      </button>
                   </div>
+
                   <div class="form-group mt-1">
                      <label for="tagInput">Tags</label>
                      <input
@@ -74,13 +78,14 @@
                         name="tagInput"
                         id="tagInput"
                         class="form-control"
-                        placeholder="Type in a tag"
+                        placeholder="Type in a tag or comma separated list of tags"
                         aria-describedby="tagInputHelp"
                      />
                      <small id="tagInputHelp" class="text-muted d-none"
-                        >Type in a tag</small
+                        >Type in a tag or comma separated list of tags</small
                      >
                   </div>
+                  <div id="filterTagList" class="mb-2"></div>
                   <button id="decideBtn" type="button" class="btn btn-primary btn-lg">
                      Tell us what to eat already!
                   </button>
@@ -112,33 +117,63 @@
          crossorigin="anonymous"
       ></script>
       <script>
+         function pillTML(tag) {
+            if (tag.length === 0) return;
+            return `<li class="c-tag-pill">
+               <span class="c-tag-pill-data">${tag}</span>
+               ${
+                  tag === 'Restaurant' || tag === 'Cook at Home'
+                     ? ''
+                     : `<span class="c-tag-pill-delete">&times;</span>`
+               }
+            </li>`;
+         }
+
          function addTag() {
-            let input = $('#tagInput');
-            pageData.tags[input.val()] = input.val();
-            console.log(pageData.tags);
-            input.val('');
+            let newTags = $('#tagInput').val().split(',');
+            newTags.forEach(tag => {
+               $('#filterTagList').append(pillTML(tag));
+            });
+            $('.c-tag-pill-delete').click(killPill);
+            $('#tagInput').val('');
+         }
+
+         function killPill() {
+            $(this).parent().remove();
          }
 
          function decideToEat() {
             type = $('#typeBtn').text().trim().toLowerCase();
             let db = Object.values(window.localStorage);
             console.log(db);
-            $('#resultsArea').empty().append(pageData.innout);
+            $('#resultsArea').empty().append(window.sessionStorage.getItem('innout'));
          }
 
          function eatIn() {
             $('#eatInBtn').removeClass('btn-outline-primary').addClass('btn-primary');
             $('#eatOutBtn').removeClass('btn-primary').addClass('btn-outline-primary');
-            pageData.innout = 'in';
+            window.sessionStorage.setItem('innout', 'in');
          }
 
          function eatOut() {
             $('#eatOutBtn').removeClass('btn-outline-primary').addClass('btn-primary');
             $('#eatInBtn').removeClass('btn-primary').addClass('btn-outline-primary');
-            pageData.innout = 'out';
+            window.sessionStorage.setItem('innout', 'out');
+         }
+
+         function getInnout() {
+            let tempDB = window.sessionStorage;
+            if (tempDB.getItem('innout') === null) {
+               eatIn();
+            } else if (tempDB.getItem('innout') === 'in') {
+               eatIn();
+            } else if (tempDB.getItem('innout') === 'out') {
+               eatOut();
+            }
          }
 
          $(document).ready(() => {
+            getInnout();
             $('#decideBtn').click(decideToEat);
             $('#eatInBtn').click(eatIn);
             $('#eatOutBtn').click(eatOut);

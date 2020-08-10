@@ -17,6 +17,7 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 -  [ ] The tags input should add pills containing the desired tag between the submit button and the tag input.
 -  [ ] Tags should be able to be removed
 -  [ ] Clicking "Tell us what to eat already!" should give you a random meal based on your filter and tags
+-  [ ] The home page should remember your options until you get a meal per session
 
 <!--  TODO: Clicking "Eat in" should filter out Restaurants
 TODO: Clicking "Eat out" should filter out home cooked meals
@@ -30,23 +31,20 @@ TODO: Debounce new tags instead of making the user hit enter/leave the text inpu
 
 -  [x] Edit meal name
 -  [x] Delete existing tags per meal
--  [ ] Add new tags in the edit modal
+-  [x] Add new tags in the edit modal
 -  [x] Delete meal option
 -  [x] Save edited meal options
 -  [x] Start from Scratch Button needs to clear meal options
 
-<!-- TODO: Add new tags in the edit modal
--->
-
 ## Bugs
 
 -  [x] Netlify isn't properly configured to deal with my external .js files
--  [ ] Meals without tags have a leading comma
--  [ ] That leading comma creates an empty tag in the edit modal
-
-<!-- BUG: tagless entries have a leading comma -->
-<!-- BUG: That leading comma creates an empty tag in the edit modal -->
+-  [x] Meals without tags have a leading comma
+-  [x] That leading comma creates an empty tag in the edit modal
 
 ## Enhancements
 
 -  [ ] Debounce new tags instead of making the user hit enter/leave the text input area
+-  [ ] Give contextual clues via color outlines or background colors when incorrectly adding a meal
+-  [ ] Order Meals Alphanumerically in Meal Table
+-  [ ] Order Tags Alphanumerically in Meal Table
