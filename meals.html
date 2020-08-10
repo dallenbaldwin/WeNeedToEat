@@ -21,7 +21,27 @@
          integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
          crossorigin="anonymous"
       />
-      <link rel="stylesheet" href="./app.css" />
+      <style>
+         .c-clickable {
+            cursor: pointer;
+         }
+         .c-tag-pill {
+            background-color: #e9ecef;
+            border: none;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 4px 2px;
+            border-radius: 16px;
+         }
+         .c-tag-pill-delete {
+            cursor: pointer;
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1;
+            text-shadow: 0 1px 0 #fff;
+            opacity: 0.5;
+         }
+      </style>
    </head>
    <body>
       <div class="container mt-4">
@@ -236,8 +256,97 @@
          integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
          crossorigin="anonymous"
       ></script>
-      <script src="./meals.js"></script>
       <script>
+         function addMealOption() {
+            if ($('#mealInput').val() === '' || $('#typeSelect').val() === '') return;
+
+            let type = $('#typeSelect').val();
+            let tags = $('#tagInput')
+               .val()
+               .split(',')
+               .map(x => x.trim());
+            tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
+
+            let row = {
+               name: $('#mealInput').val(),
+               tags: tags,
+            };
+
+            window.localStorage.setItem(row.name, JSON.stringify(row));
+            location.reload();
+         }
+
+         function deleteMeal() {
+            let key = $('#modalMealNameInput').attr('placeholder');
+            window.localStorage.removeItem(key);
+            location.reload();
+         }
+
+         function clearLocalStorage() {
+            $('#clearDBModal').modal('toggle');
+         }
+
+         function confirmClearLocalStorage() {
+            window.localStorage.clear();
+            location.reload();
+         }
+
+         function loadTable() {
+            let db = Object.values(window.localStorage).map(x => JSON.parse(x));
+            let table = $('#mealsTable');
+            table.empty();
+            db.forEach(row => {
+               table.append(`<tr class="c-clickable">
+                  <td>${row.name}</td>
+                  <td>${row.tags.map(x => ` ${x}`)}</td>
+               </tr>`);
+            });
+         }
+
+         function killPill() {
+            $(this).parent().remove();
+         }
+
+         function editRow() {
+            $('#editRecordModal').modal('toggle');
+            let mealData = JSON.parse(
+               window.localStorage.getItem($(this).children()[0].innerText)
+            );
+            $('#modalMealNameInput').attr('placeholder', mealData.name);
+            let list = $('#editModalTagList');
+            list.empty();
+            mealData.tags.forEach(tag => {
+               $('#editModalTagList').append(`<li class="c-tag-pill">
+                  <span class="c-tag-pill-data">${tag}</span>
+                  ${
+                     tag === 'Restaurant' || tag === 'Cook at Home'
+                        ? ''
+                        : `<span class="c-tag-pill-delete">&times;</span>`
+                  }
+               </li>`);
+            });
+            $('.c-tag-pill-delete').click(killPill);
+         }
+
+         function saveEdits() {
+            let input = $('#modalMealNameInput');
+            let mealName = input.val() === '' ? input.attr('placeholder') : input.val();
+            let tags = [];
+            $('#editModalTagList')
+               .find('.c-tag-pill-data')
+               .each(function () {
+                  tags.push($(this).text());
+               });
+            let newData = {
+               name: mealName,
+               tags: tags,
+            };
+            let db = window.localStorage;
+            db.removeItem(input.attr('placeholder'));
+            db.setItem(mealName, JSON.stringify(newData));
+            location.reload();
+         }
+
          $(document).ready(() => {
             loadTable();
             $('#deleteMealBtn').click(deleteMeal);
@@ -245,6 +354,7 @@
             $('#confirmClearBtn').click(confirmClearLocalStorage);
             $('#doneBtn').click(addMealOption);
             $('tr').click(editRow);
+            $('#saveMealBtn').click(saveEdits);
          });
       </script>
    </body>

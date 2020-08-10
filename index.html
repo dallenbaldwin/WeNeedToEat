@@ -16,6 +16,27 @@
          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
          crossorigin="anonymous"
       />
+      <style>
+         .c-clickable {
+            cursor: pointer;
+         }
+         .c-tag-pill {
+            background-color: #e9ecef;
+            border: none;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 4px 2px;
+            border-radius: 16px;
+         }
+         .c-tag-pill-delete {
+            cursor: pointer;
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1;
+            text-shadow: 0 1px 0 #fff;
+            opacity: 0.5;
+         }
+      </style>
    </head>
    <body>
       <div class="container">
@@ -90,8 +111,33 @@
          integrity="sha256-Jvh9+A4HNbbWsWl1Dw7kAzNsU3y8elGIjLnUSUNMtLg="
          crossorigin="anonymous"
       ></script>
-      <script src="./index.js"></script>
       <script>
+         function addTag() {
+            let input = $('#tagInput');
+            pageData.tags[input.val()] = input.val();
+            console.log(pageData.tags);
+            input.val('');
+         }
+
+         function decideToEat() {
+            type = $('#typeBtn').text().trim().toLowerCase();
+            let db = Object.values(window.localStorage);
+            console.log(db);
+            $('#resultsArea').empty().append(pageData.innout);
+         }
+
+         function eatIn() {
+            $('#eatInBtn').removeClass('btn-outline-primary').addClass('btn-primary');
+            $('#eatOutBtn').removeClass('btn-primary').addClass('btn-outline-primary');
+            pageData.innout = 'in';
+         }
+
+         function eatOut() {
+            $('#eatOutBtn').removeClass('btn-outline-primary').addClass('btn-primary');
+            $('#eatInBtn').removeClass('btn-primary').addClass('btn-outline-primary');
+            pageData.innout = 'out';
+         }
+
          $(document).ready(() => {
             $('#decideBtn').click(decideToEat);
             $('#eatInBtn').click(eatIn);
