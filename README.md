@@ -34,6 +34,7 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 -  [x] Netlify isn't properly configured to deal with my external .js files
 -  [x] Meals without tags have a leading comma
 -  [x] That leading comma creates an empty tag in the edit modal
+-  [ ] tags should not be case-sensitive when searching
 
 ## Enhancements
 
