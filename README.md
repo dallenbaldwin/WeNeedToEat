@@ -42,3 +42,4 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 -  [ ] Give contextual clues via color outlines or background colors when incorrectly adding a meal
 -  [ ] Order Meals Alphanumerically in Meal Table
 -  [ ] Order Tags Alphanumerically in Meal Table
+-  [ ] Add Ingredients for each Meal to be able to search with.
