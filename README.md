@@ -47,4 +47,5 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 -  [ ] order by buttons
 -  [ ] Add Ingredients for each Meal to be able to search with.
 -  [ ] Don't let the meals table expand indefinitely in browser. Figure out what to do with mobile
+-  [ ] confirm delete for row data.
 
