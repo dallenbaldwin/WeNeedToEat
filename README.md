@@ -35,6 +35,8 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 -  [x] Meals without tags have a leading comma
 -  [x] That leading comma creates an empty tag in the edit modal
 -  [ ] tags should not be case-sensitive when searching
+-  [ ] Clicking on the meal table column headers opens the edit screen
+-  [ ] tag lists with a comma at the end instead of a word creates a blank tag in the edit modal
 
 ## Enhancements
 
@@ -42,4 +44,7 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 -  [ ] Give contextual clues via color outlines or background colors when incorrectly adding a meal
 -  [ ] Order Meals Alphanumerically in Meal Table
 -  [ ] Order Tags Alphanumerically in Meal Table
+-  [ ] order by buttons
 -  [ ] Add Ingredients for each Meal to be able to search with.
+-  [ ] Don't let the meals table expand indefinitely in browser. Figure out what to do with mobile
+
