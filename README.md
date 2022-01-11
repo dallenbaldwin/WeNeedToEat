@@ -7,7 +7,3 @@ We also have a really hard time deciding what to cook when we're not too lazy to
 ## App
 
 Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yourself.
-
-## Roadmap
-
-[Trello](https://trello.com/b/TdY9MRzs/we-need-to-eat)
