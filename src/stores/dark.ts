@@ -13,7 +13,6 @@ export const useDarkStore = defineStore({
   getters: {},
   state: () => {
     const initial = localStorage.getItem('dark');
-    console.log(initial);
     return {
       dark: initial === 'false' ? false : true,
     };
