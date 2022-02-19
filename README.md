@@ -15,4 +15,14 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 `npm install`
 `npm run dev`
 
-This project is built using Vue3, Vite, Pinia, and Vue Router, maybe with some DynamoDB in the future...
+### Tech Stack
+
+- [Vue3](https://vuejs.org/guide/introduction.html)
+- [Vite](https://vitejs.dev/)
+- [Pinia](https://pinia.vuejs.org/)
+- [Vue Router](https://router.vuejs.org/)
+- [TailwindCSS](https://tailwindcss.com/docs/installation)
+- [Native UI](https://www.naiveui.com/en-US/dark/components/)
+- [Icon List](https://www.xicons.org/#/)
+- [Icon Usage](https://github.com/07akioni/xicons#usage)
+- DynamoDB??

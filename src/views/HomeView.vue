@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HelloWorldVue, { type HelloWorldEmits } from '@/components/HelloWorld.vue';
+import { useDarkStore } from '@/stores/dark';
 import { reactive, ref } from 'vue';
 const handleChat: HelloWorldEmits['chat'] = (payload) => {
   alert(payload);
@@ -12,6 +13,7 @@ const userData = reactive({
   username: 'Dallen Baldwin',
   password: 'a-very-secure-password',
 });
+const { toggleDark } = useDarkStore();
 </script>
 
 <template>
@@ -21,4 +23,5 @@ const userData = reactive({
   <div v-if="count > 3">
     {{ JSON.stringify(userData) }}
   </div>
+  <button @click="toggleDark">Toggle Dark</button>
 </template>

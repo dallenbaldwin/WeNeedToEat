@@ -12,12 +12,15 @@
     <div>Counter State: {{ $state.counter }}</div>
     <div>Double Counter: {{ double }}</div>
   </div>
+  <Icon class="text-secondary-500"><HomeFilled /></Icon>
 </template>
 
 <script setup lang="ts">
 import { useMousePosition } from '@/composition-functions/useMousePosition';
 import { useCounterStore } from '@/stores/counter';
 import { ref } from 'vue';
+import { Icon } from '@vicons/utils';
+import { HomeFilled } from '@vicons/material';
 
 const { $state, doubleCount, increment } = useCounterStore();
 
