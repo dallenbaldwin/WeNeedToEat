@@ -7,3 +7,12 @@ We also have a really hard time deciding what to cook when we're not too lazy to
 ## App
 
 Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yourself.
+
+## Dev
+
+### Getting started
+
+`npm install`
+`npm run dev`
+
+This project is built using Vue3, Vite, Pinia, and Vue Router, maybe with some DynamoDB in the future...
