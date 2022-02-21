@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 import { useDarkStore } from './stores/dark';
+import Navbar from './components/Navbar.vue';
 
 onMounted(() => {
   const { dark } = useDarkStore();
@@ -11,9 +12,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <RouterLink to="/">Home</RouterLink>
-  <RouterLink to="/about">About</RouterLink>
-  <RouterView />
+  <Navbar />
+  <div class="container mx-auto">
+    <RouterView />
+  </div>
 </template>
 
 <style></style>

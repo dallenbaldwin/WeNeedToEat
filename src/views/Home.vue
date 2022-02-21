@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import HelloWorldVue, { type HelloWorldEmits } from '@/components/HelloWorld.vue';
-import { useDarkStore } from '@/stores/dark';
-import { reactive, ref } from 'vue';
-const handleChat: HelloWorldEmits['chat'] = (payload) => {
-  alert(payload);
-  count.value++;
-  if (count.value > 4) userData.password = 'a-new-password';
+import H1 from '@/components/typography/H1.vue';
+import H6 from '@/components/typography/H6.vue';
+import Button from '@/components/Button.vue';
+import { computed, ref } from 'vue';
+import Options from '../components/Options.vue';
+
+const eatIn = ref(true);
+const toggleEatIn = () => (eatIn.value = !eatIn.value);
+const eatInBtnText = computed(() => (eatIn.value ? 'Eat Out' : 'Eat In'));
+const eatInText = computed(() =>
+  eatIn.value ? `Let's cook a nice meal` : `Eh, we're too lazy tonight. Let's eat out!`
+);
+const log = (options: string[]) => {
+  console.log(options);
 };
-const message = `Here's a great message`;
-const count = ref(0);
-const userData = reactive({
-  username: 'Dallen Baldwin',
-  password: 'a-very-secure-password',
-});
-const { toggleDark } = useDarkStore();
 </script>
 
 <template>
-  <div>Home</div>
-  <HelloWorldVue :message="message" v-on:chat="handleChat"></HelloWorldVue>
-  <div>You've clicked {{ message }} {{ count }} times!</div>
-  <div v-if="count > 3">
-    {{ JSON.stringify(userData) }}
+  <H1 text="We really need to eat" />
+  <div class="flex items-center justify-start gap-3">
+    <H6 text="What should we eat?" />
+    <span>{{ eatInText }}</span>
   </div>
-  <button @click="toggleDark">Toggle Dark</button>
+  <Button :text="eatInBtnText" @click="toggleEatIn" />
+  <Options @options="log" />
 </template>

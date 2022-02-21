@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 
 export const useDarkStore = defineStore({
   id: 'dark',
+  state: () => ({ dark: localStorage.getItem('dark') !== 'false' }),
   actions: {
     toggleDark() {
       const newDark = !this.dark;
@@ -9,12 +10,5 @@ export const useDarkStore = defineStore({
       document.documentElement.classList.toggle('dark');
       this.dark = newDark;
     },
-  },
-  getters: {},
-  state: () => {
-    const initial = localStorage.getItem('dark');
-    return {
-      dark: initial === 'false' ? false : true,
-    };
   },
 });
