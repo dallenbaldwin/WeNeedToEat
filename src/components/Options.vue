@@ -3,27 +3,33 @@ import { ref } from 'vue';
 import H6 from './typography/H6.vue';
 import { Icon } from '@vicons/utils';
 import { CloseFilled } from '@vicons/material';
-
-const emit = defineEmits<{ (e: 'options', options: string[]): void }>();
+import Button from './Button.vue';
+import { useEatInStore } from '@/stores/eatIn';
+import { storeToRefs } from 'pinia';
 
 const inputs = ref<string[]>([]);
 const nextValue = ref<string>('');
-const sendOptions = () => {
-  emit('options', inputs.value);
-};
+const meals = ref<string[]>(['mexican', 'chinese']);
+const { eatIn } = storeToRefs(useEatInStore());
+
 const addToList = () => {
-  if (!nextValue.value.length) return;
-  inputs.value.push(...nextValue.value.split(',').map((v) => v.trim()));
+  if (!nextValue.value.trim().length) return;
+  inputs.value.push(
+    ...nextValue.value
+      .split(',')
+      .map((v) => v.trim())
+      .filter((v) => v.length)
+  );
   nextValue.value = '';
-  sendOptions();
 };
 const reset = () => {
   inputs.value = [];
-  sendOptions();
 };
 const remove = (input: string) => {
   inputs.value = inputs.value.filter((v) => v !== input);
-  sendOptions();
+};
+const whatToEat = () => {
+  console.log(inputs.value, eatIn.value);
 };
 </script>
 
@@ -42,8 +48,8 @@ const remove = (input: string) => {
         'h-10',
         'p-3',
         'align-middle',
-        'bg-light-primary',
-        'dark:bg-dark-primary',
+        'bg-primary-light',
+        'dark:bg-primary-dark',
         'text-black',
         'dark:text-white',
         'font-light',
@@ -63,7 +69,7 @@ const remove = (input: string) => {
       v-for="(input, i) of inputs"
       :key="i"
       :class="
-        ['bg-light-primary', 'dark:bg-dark-primary', 'rounded-3xl', 'px-3', 'py-1'].join(
+        ['bg-primary-light', 'dark:bg-primary-dark', 'rounded-3xl', 'px-3', 'py-1'].join(
           ' '
         )
       ">
@@ -84,4 +90,5 @@ const remove = (input: string) => {
       ></span>
     </div>
   </div>
+  <Button text="Well tell us what to eat already!" @click="whatToEat" />
 </template>

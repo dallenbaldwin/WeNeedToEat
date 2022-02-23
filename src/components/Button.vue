@@ -16,32 +16,10 @@ const props = defineProps<ButtonProps>();
 // @ts-expect-error when this is mounted, it will not be null
 const button = ref<HTMLButtonElement>(null);
 
-const classes = computed(() => {
-  const classes: string[] = [];
-  if (props.disabled) return classes.join('');
-  else if (props.secondary)
-    classes.push(
-      'from-light-secondary',
-      'to-gray-100',
-      'hover:from-gray-100',
-      'hover:to-light-secondary',
-      'dark:from-dark-secondary',
-      'dark:to-gray-800',
-      'dark:hover:from-gray-800',
-      'dark:hover:to-dark-secondary'
-    );
-  else
-    classes.push(
-      'from-light-primary',
-      'to-cyan-100',
-      'hover:from-cyan-100',
-      'hover:to-light-primary',
-      'dark:from-dark-primary',
-      'dark:to-fuchsia-800',
-      'dark:hover:from-fuchsia-800',
-      'dark:hover:to-dark-primary'
-    );
-  return classes.join(' ');
+const theme = computed(() => {
+  if (props.disabled) return '';
+  else if (props.secondary) return 'bg-secondary-light dark:bg-secondary-dark';
+  else return 'bg-primary-light dark:bg-primary-dark';
 });
 
 const translate = () => {
@@ -58,15 +36,21 @@ const translate = () => {
     ref="button"
     @click="translate"
     :class="[
-      classes,
+      theme,
       'btn',
       'font-light',
       'rounded-xl',
-      'bg-gradient-to-b',
+      'hover:bg-white',
+      'dark:hover:bg-black',
+      'border-transparent',
+      'border-[1px]',
+      'hover:border-black',
+      'hover:border-solid',
+      'dark:hover:border-white',
       'disabled:text-white',
       'dark:disabled:text-black',
-      'disabled:bg-gray-400',
-      'dark:disabled:bg-gray-600',
+      'disabled:bg-secondary-light',
+      'dark:disabled:bg-secondary-dark',
       'disabled:cursor-not-allowed',
     ]">
     <span class="flex items-center justify-center gap-1 p-3">{{ text }}</span>

@@ -2,18 +2,23 @@
 import { Icon } from '@vicons/utils';
 import { DarkModeRound, LightModeRound } from '@vicons/material';
 import { useDarkStore } from '@/stores/dark';
-import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
 
-const { dark, $subscribe, toggleDark } = useDarkStore();
-const isDark = ref(dark);
-$subscribe((_, { dark }) => {
-  isDark.value = dark;
-});
+const { dark } = storeToRefs(useDarkStore());
+const { toggleDark } = useDarkStore();
 </script>
 
 <template>
   <nav
-    class="h-28 sticky bg-gradient-to-b from-light-primary to-white dark:from-dark-primary dark:to-black">
+    :class="[
+      'h-28',
+      'sticky',
+      'bg-gradient-to-b',
+      'from-primary-light',
+      'to-white',
+      'dark:from-primary-dark',
+      'dark:to-black',
+    ]">
     <div class="flex justify-end items-center gap-3 mx-12 pt-6">
       <div class="mr-auto">
         <span class="font-semibold">We Need to Eat</span>
@@ -26,7 +31,7 @@ $subscribe((_, { dark }) => {
         class="text-dark-primary dark:text-light-primary cursor-pointer"
         @click="toggleDark"
         size="32">
-        <LightModeRound v-if="isDark" />
+        <LightModeRound v-if="dark" />
         <DarkModeRound v-else />
       </Icon>
     </div>
