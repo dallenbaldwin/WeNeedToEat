@@ -15,7 +15,7 @@ module.exports = {
           dark: colors.gray[800],
         },
         black: colors.slate[900],
-        white: '#FAF9F6',
+        white: colors.gray[100],
       },
     },
   },
