@@ -25,5 +25,5 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 - [Native UI](https://www.naiveui.com/en-US/dark/components/)
 - [Icon List](https://www.xicons.org/#/)
 - [Icon Usage](https://github.com/07akioni/xicons#usage)
-- Firestore
-- [Firestorm ORM](https://github.com/lmcq/firebase-firestorm)
+- [Firestore](https://firebase.google.com/docs/web/setup)
+- [FireORM.js](https://fireorm.js.org/#/)
