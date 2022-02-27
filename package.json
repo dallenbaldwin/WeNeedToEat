@@ -2,7 +2,7 @@
    "name": "weneedtoeat",
    "version": "0.0.0",
    "scripts": {
-      "dev": "docker-compose up -d && vite",
+      "dev": "vite",
       "dc:up": "docker-compose up",
       "dc:down": "docker-compose down",
       "dc:restart": "docker-compose down && docker-compose up",
@@ -11,6 +11,7 @@
       "typecheck": "vue-tsc --noEmit"
    },
    "dependencies": {
+      "@tailwindcss/forms": "^0.4.0",
       "firebase": "^9.6.7",
       "fireorm": "^0.23.3",
       "pinia": "^2.0.11",

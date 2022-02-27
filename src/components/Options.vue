@@ -47,15 +47,16 @@ const whatToEat = () => {
         'mb-3',
         'h-10',
         'p-3',
-        'align-middle',
         'bg-primary-light',
         'dark:bg-primary-dark',
         'text-black',
         'dark:text-white',
         'font-light',
         'rounded-xl',
-        'focus:dark:border-white',
-        'focus:border-black',
+        'border-transparent',
+        'focus:ring-0',
+        'dark:focus:ring-0',
+        'dark:border-none',
       ].join(' ')
     "
     type="text"
