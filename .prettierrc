@@ -3,6 +3,6 @@
    "useTabs": false,
    "printWidth": 90,
    "singleQuote": true,
-   "bracketSameLine": true,
+   "bracketSameLine": false,
    "proseWrap": "preserve"
 }
