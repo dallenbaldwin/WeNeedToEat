@@ -6,7 +6,7 @@ import { computed } from 'vue';
 import Options from '../components/Options.vue';
 import { storeToRefs } from 'pinia';
 import { useEatInStore } from '@/stores/eatIn';
-import router from '@/router';
+import router, { View } from '@/router';
 
 const { eatIn } = storeToRefs(useEatInStore());
 const { toggleEatIn } = useEatInStore();
@@ -15,7 +15,7 @@ const eatInText = computed(() =>
   eatIn.value ? `Let's cook a nice meal` : `Eh, we're too lazy tonight. Let's eat out!`
 );
 const toMeals = () => {
-  router.replace({ name: 'meals' });
+  router.replace({ name: View.MEALS });
 };
 </script>
 

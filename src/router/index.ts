@@ -1,26 +1,57 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from './../stores/user';
+import {
+  createRouter,
+  createWebHistory,
+  type NavigationGuard,
+  type RouteRecordRaw,
+} from 'vue-router';
 import AboutVue from '@/views/About.vue';
 import HomeView from '@/views/Home.vue';
 import MealsVue from '@/views/Meals.vue';
+import AuthVue from '@/views/Auth.vue';
+
+export enum View {
+  HOME = 'home',
+  ABOUT = 'about',
+  MEALS = 'meals',
+  AUTH = 'auth',
+}
+
+const navGuard: NavigationGuard = (to, _, next) => {
+  const { authenticated } = useUserStore();
+  const insecureViews = [View.ABOUT, View.AUTH];
+  if (insecureViews.includes(to.name as View)) return next();
+  if (authenticated) return next();
+  router.replace({ name: View.AUTH });
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: View.HOME,
       component: HomeView,
+      beforeEnter: navGuard,
     },
     {
-      path: '/about',
-      name: 'about',
+      path: `/${View.ABOUT}`,
+      name: View.ABOUT,
       component: AboutVue,
+      beforeEnter: navGuard,
     },
     {
-      path: '/meals',
-      name: 'meals',
+      path: `/${View.MEALS}`,
+      name: View.MEALS,
       component: MealsVue,
+      beforeEnter: navGuard,
     },
+    {
+      path: `/${View.AUTH}`,
+      name: View.AUTH,
+      component: AuthVue,
+      beforeEnter: navGuard,
+    } as RouteRecordRaw,
   ],
 });
 

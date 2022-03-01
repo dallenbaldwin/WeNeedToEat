@@ -6,6 +6,7 @@ import { CloseFilled } from '@vicons/material';
 import Button from './Button.vue';
 import { useEatInStore } from '@/stores/eatIn';
 import { storeToRefs } from 'pinia';
+import Textbox from './inputs/Textbox.vue';
 
 const inputs = ref<string[]>([]);
 const nextValue = ref<string>('');
@@ -38,30 +39,7 @@ const whatToEat = () => {
     <H6 text="Options" />
     <Icon @click="reset" class="cursor-pointer"><CloseFilled /></Icon>
   </div>
-  <input
-    :class="
-      [
-        'cursor-text',
-        'block',
-        'w-full',
-        'mb-3',
-        'h-10',
-        'p-3',
-        'bg-primary-light',
-        'dark:bg-primary-dark',
-        'text-black',
-        'dark:text-white',
-        'font-light',
-        'rounded-xl',
-        'border-transparent',
-        'focus:ring-0',
-        'dark:focus:ring-0',
-        'dark:border-none',
-      ].join(' ')
-    "
-    type="text"
-    v-model="nextValue"
-    @change="addToList" />
+  <Textbox v-model="nextValue" @change="addToList" />
   <div
     :class="
       ['flex', 'justify-start', 'items-center', 'mb-3', 'gap-1', 'flex-wrap'].join(' ')
