@@ -38,8 +38,13 @@ const show = ref(false);
         "
         :type="show ? 'text' : 'password'"
         :value="modelValue"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)" />
-      <Icon class="justify-self-end" size="24" @click="() => (show = !show)">
+        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+      />
+      <Icon
+        class="justify-self-end cursor-pointer"
+        size="24"
+        @click="() => (show = !show)"
+      >
         <DisabledVisibleRound v-if="show" />
         <RemoveRedEyeRound v-else />
       </Icon>
