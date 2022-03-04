@@ -1,3 +1,4 @@
+import { View } from './../router/index';
 import { defineStore } from 'pinia';
 import {
   getAuth,
@@ -5,26 +6,49 @@ import {
   type Auth,
   type User,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
 } from 'firebase/auth';
+import router from '@/router/index';
 
-// https://learnvue.co/2021/06/a-vue-firebase-authentication-tutorial-vue-3-and-firebase/#adding-firebase-to-vue3
 export const useUserStore = defineStore({
   id: 'user',
-  state: (): { auth: Auth; user: User | null } => ({ auth: getAuth(), user: null }),
+  state: (): { _auth: Auth; user: User | null } => ({ _auth: getAuth(), user: null }),
   getters: {
     authenticated(): boolean {
-      onAuthStateChanged(this.auth, (user) => {
-        if (!user) this.user = user;
-      });
-      return this.user !== null;
+      return !!this.user;
     },
+    //  authenticated(): Promise<boolean> {
+    //    return new Promise((resolve, reject) => {
+    //      onAuthStateChanged(
+    //        this._auth,
+    //        (user) => resolve(!!user),
+    //        (err) => reject(err)
+    //      );
+    //    });
+    //  },
   },
   actions: {
-    login() {},
-    logout() {},
+    async login(email: string, password: string) {
+      try {
+        const { user } = await signInWithEmailAndPassword(this._auth, email, password);
+        this.user = user;
+        toHome();
+      } catch (err) {
+        alert(err);
+      }
+    },
+    async logout() {
+      await signOut(this._auth);
+      this.user = null;
+      router.replace({ name: View.AUTH });
+    },
     async register(email: string, password: string) {
-      const { user } = await createUserWithEmailAndPassword(this.auth, email, password);
+      const { user } = await createUserWithEmailAndPassword(this._auth, email, password);
       this.user = user;
+      toHome();
     },
   },
 });
+
+const toHome = () => router.replace({ name: View.HOME });
