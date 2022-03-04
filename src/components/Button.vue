@@ -40,19 +40,19 @@ const translate = () => {
       'btn',
       'font-light',
       'rounded-xl',
-      'hover:bg-white',
-      'dark:hover:bg-black',
       'border-transparent',
       'border-[1px]',
+      'hover:opacity-75',
+      'duration-300',
       'hover:border-black',
-      'hover:border-solid',
       'dark:hover:border-white',
       'disabled:text-white',
       'dark:disabled:text-black',
       'disabled:bg-secondary-light',
       'dark:disabled:bg-secondary-dark',
       'disabled:cursor-not-allowed',
-    ]">
+    ]"
+  >
     <span class="flex items-center justify-center gap-1 p-3">{{ text }}</span>
   </button>
 </template>
