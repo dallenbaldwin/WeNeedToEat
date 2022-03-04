@@ -23,6 +23,7 @@ const navGuard: NavigationGuard = (to, _, next) => {
   if (insecureViews.includes(to.name as View)) return next();
   if (authenticated) return next();
   router.replace({ name: View.AUTH });
+  next();
 };
 
 const router = createRouter({
