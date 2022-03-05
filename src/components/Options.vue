@@ -7,6 +7,7 @@ import Button from './Button.vue';
 import { useEatInStore } from '@/stores/eatIn';
 import { storeToRefs } from 'pinia';
 import Textbox from './inputs/Textbox.vue';
+import router, { View } from '@/router';
 
 const inputs = ref<string[]>([]);
 const nextValue = ref<string>('');
@@ -32,6 +33,9 @@ const remove = (input: string) => {
 const whatToEat = () => {
   console.log(inputs.value, eatIn.value);
 };
+const toMeals = () => {
+  router.replace({ name: View.MEALS });
+};
 </script>
 
 <template>
@@ -43,7 +47,8 @@ const whatToEat = () => {
   <div
     :class="
       ['flex', 'justify-start', 'items-center', 'mb-3', 'gap-1', 'flex-wrap'].join(' ')
-    ">
+    "
+  >
     <div
       v-for="(input, i) of inputs"
       :key="i"
@@ -51,7 +56,8 @@ const whatToEat = () => {
         ['bg-primary-light', 'dark:bg-primary-dark', 'rounded-3xl', 'px-3', 'py-1'].join(
           ' '
         )
-      ">
+      "
+    >
       <span
         :class="
           [
@@ -69,5 +75,8 @@ const whatToEat = () => {
       ></span>
     </div>
   </div>
-  <Button text="Well tell us what to eat already!" @click="whatToEat" />
+  <div class="flex justify-between">
+    <Button text="Well tell us what to eat already!" @click="whatToEat" />
+    <Button text="What are the options again?" @click="toMeals" />
+  </div>
 </template>
