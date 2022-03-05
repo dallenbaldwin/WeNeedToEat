@@ -9,6 +9,7 @@ import AboutVue from '@/views/About.vue';
 import HomeView from '@/views/Home.vue';
 import MealsVue from '@/views/Meals.vue';
 import AuthVue from '@/views/Auth.vue';
+import { storeToRefs } from 'pinia';
 
 export enum View {
   HOME = 'home',
@@ -17,13 +18,22 @@ export enum View {
   AUTH = 'auth',
 }
 
-const navGuard: NavigationGuard = (to, _, next) => {
-  const { authenticated } = useUserStore();
-  const insecureViews = [View.ABOUT, View.AUTH];
-  if (insecureViews.includes(to.name as View)) return next();
-  if (authenticated) return next();
-  router.replace({ name: View.AUTH });
-  next();
+const navGuard: NavigationGuard = async (to, _, next) => {
+  const { stateChanged } = useUserStore();
+  try {
+    await stateChanged();
+    const { authenticated } = useUserStore();
+    const insecureViews = [View.ABOUT];
+    if (insecureViews.includes(to.name as View)) return next();
+    if (!authenticated) {
+      router.replace({ name: View.AUTH });
+      return next();
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    next();
+  }
 };
 
 const router = createRouter({

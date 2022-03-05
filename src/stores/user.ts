@@ -13,25 +13,32 @@ import router from '@/router/index';
 
 export const useUserStore = defineStore({
   id: 'user',
-  state: (): { _auth: Auth; user: User | null } => ({ _auth: getAuth(), user: null }),
+  state: (): { user: User | null } => ({ user: null }),
   getters: {
     authenticated(): boolean {
       return !!this.user;
     },
-    //  authenticated(): Promise<boolean> {
-    //    return new Promise((resolve, reject) => {
-    //      onAuthStateChanged(
-    //        this._auth,
-    //        (user) => resolve(!!user),
-    //        (err) => reject(err)
-    //      );
-    //    });
-    //  },
   },
   actions: {
+    async stateChanged(): Promise<void> {
+      await new Promise((resolve, reject) => {
+        onAuthStateChanged(
+          getAuth(),
+          (user) => {
+            if (!user) reject();
+            this.user = user;
+            resolve(undefined);
+          },
+          (err) => {
+            alert(err);
+            reject();
+          }
+        );
+      });
+    },
     async login(email: string, password: string) {
       try {
-        const { user } = await signInWithEmailAndPassword(this._auth, email, password);
+        const { user } = await signInWithEmailAndPassword(getAuth(), email, password);
         this.user = user;
         toHome();
       } catch (err) {
@@ -39,12 +46,12 @@ export const useUserStore = defineStore({
       }
     },
     async logout() {
-      await signOut(this._auth);
+      await signOut(getAuth());
       this.user = null;
       router.replace({ name: View.AUTH });
     },
     async register(email: string, password: string) {
-      const { user } = await createUserWithEmailAndPassword(this._auth, email, password);
+      const { user } = await createUserWithEmailAndPassword(getAuth(), email, password);
       this.user = user;
       toHome();
     },

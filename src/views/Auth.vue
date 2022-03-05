@@ -20,6 +20,7 @@ const { login, register } = useUserStore();
     <div class="w-1/2">
       <Email label="Email" v-model="email" />
       <Password label="Password" v-model="password" />
+      <!-- TODO add second password for register -->
       <div class="flex justify-end">
         <Button
           :text="isLogin ? 'Register' : 'Login'"

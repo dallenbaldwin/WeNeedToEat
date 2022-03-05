@@ -24,7 +24,7 @@ const theme = computed(() => {
 
 const translate = () => {
   const classes = ['translate-x-[1px]', 'translate-y-[1px]'];
-  const each = () => classes.forEach((c) => button?.value.classList.toggle(c));
+  const each = () => classes.forEach((c) => button?.value?.classList.toggle(c));
   each();
   setTimeout(() => each(), 200);
 };
