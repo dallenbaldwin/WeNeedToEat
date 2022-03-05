@@ -1,3 +1,4 @@
+import { storeToRefs } from 'pinia';
 import { useUserStore } from './../stores/user';
 import {
   createRouter,
@@ -6,10 +7,9 @@ import {
   type RouteRecordRaw,
 } from 'vue-router';
 import AboutVue from '@/views/About.vue';
-import HomeView from '@/views/Home.vue';
+import HomeVue from '@/views/Home.vue';
 import MealsVue from '@/views/Meals.vue';
 import AuthVue from '@/views/Auth.vue';
-import { storeToRefs } from 'pinia';
 
 export enum View {
   HOME = 'home',
@@ -18,22 +18,13 @@ export enum View {
   AUTH = 'auth',
 }
 
-const navGuard: NavigationGuard = async (to, _, next) => {
+const navGuard: NavigationGuard = async (to, __, next) => {
+  const { authenticated } = storeToRefs(useUserStore());
   const { stateChanged } = useUserStore();
-  try {
-    await stateChanged();
-    const { authenticated } = useUserStore();
-    const insecureViews = [View.ABOUT];
-    if (insecureViews.includes(to.name as View)) return next();
-    if (!authenticated) {
-      router.replace({ name: View.AUTH });
-      return next();
-    }
-  } catch (err) {
-    console.log(err);
-  } finally {
-    next();
-  }
+  await stateChanged();
+  if (!authenticated.value) router.replace({ name: View.AUTH });
+  if (authenticated.value && to.name === View.AUTH) router.replace({ name: View.HOME });
+  next();
 };
 
 const router = createRouter({
@@ -42,7 +33,7 @@ const router = createRouter({
     {
       path: '/',
       name: View.HOME,
-      component: HomeView,
+      component: HomeVue,
       beforeEnter: navGuard,
     },
     {
@@ -61,8 +52,7 @@ const router = createRouter({
       path: `/${View.AUTH}`,
       name: View.AUTH,
       component: AuthVue,
-      beforeEnter: navGuard,
-    } as RouteRecordRaw,
+    },
   ],
 });
 

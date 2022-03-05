@@ -3,7 +3,6 @@ import { defineStore } from 'pinia';
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  type Auth,
   type User,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -20,18 +19,16 @@ export const useUserStore = defineStore({
     },
   },
   actions: {
-    async stateChanged(): Promise<void> {
-      await new Promise((resolve, reject) => {
+    stateChanged(): Promise<void> {
+      return new Promise<void>((resolve, reject) => {
         onAuthStateChanged(
           getAuth(),
           (user) => {
-            if (!user) reject();
             this.user = user;
-            resolve(undefined);
+            resolve();
           },
           (err) => {
-            alert(err);
-            reject();
+            reject(err);
           }
         );
       });
