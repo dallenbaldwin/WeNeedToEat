@@ -3,5 +3,5 @@ import H1 from '../components/typography/H1.vue';
 </script>
 
 <template>
-  <H1 text="Meals" />
+  <H1>Meals</H1>
 </template>

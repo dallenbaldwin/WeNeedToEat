@@ -37,7 +37,7 @@ const visible = ref(false);
       ]"
     >
       <div class="flex justify-between">
-        <H3 text="User" />
+        <H3>User</H3>
         <LightDark />
       </div>
       <div>

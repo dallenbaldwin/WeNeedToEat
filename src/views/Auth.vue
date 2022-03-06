@@ -15,8 +15,8 @@ const { login, register } = useUserStore();
 
 <template>
   <div>
-    <H1 v-if="isLogin" text="Login" />
-    <H1 v-else text="Register" />
+    <H1 v-if="isLogin">Login</H1>
+    <H1 v-else>Register</H1>
     <div class="w-1/2">
       <Email label="Email" v-model="email" />
       <Password label="Password" v-model="password" />

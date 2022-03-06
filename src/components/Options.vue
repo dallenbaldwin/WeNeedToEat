@@ -40,7 +40,7 @@ const toMeals = () => {
 
 <template>
   <div class="flex gap-1 items-center justify-start">
-    <H6 text="Options" />
+    <H6>Options</H6>
     <Icon @click="reset" class="cursor-pointer"><CloseFilled /></Icon>
   </div>
   <Textbox v-model="nextValue" @change="addToList" />
