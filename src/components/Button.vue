@@ -9,7 +9,7 @@ export interface ButtonProps {
   //   success?: boolean;
   //   info?: boolean;
   //   warning?: boolean;
-  //   danger?: boolean;
+  danger?: boolean;
 }
 const props = defineProps<ButtonProps>();
 
@@ -19,6 +19,7 @@ const button = ref<HTMLButtonElement>(null);
 const theme = computed(() => {
   if (props.disabled) return '';
   else if (props.secondary) return 'bg-secondary-light dark:bg-secondary-dark';
+  else if (props.danger) return 'bg-danger-light dark:bg-danger-dark';
   else return 'bg-primary-light dark:bg-primary-dark';
 });
 

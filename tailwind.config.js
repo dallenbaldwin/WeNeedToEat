@@ -7,15 +7,19 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          light: colors.cyan[400],
+          light: colors.cyan[300],
           dark: colors.cyan[800],
         },
         secondary: {
-          light: colors.gray[400],
-          dark: colors.gray[800],
+          light: colors.gray[300],
+          dark: colors.gray[700],
         },
         black: colors.slate[900],
         white: colors.gray[100],
+        danger: {
+          light: colors.red[600],
+          dark: colors.red[800],
+        },
       },
     },
   },
