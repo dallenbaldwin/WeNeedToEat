@@ -12,6 +12,7 @@ const deleteAccount = () => {
   deleteCounter.value++;
   if (deleteCounter.value < 2) return;
   deleteCounter.value = 0;
+  // TODO
   alert('Coming soon!');
 };
 </script>
