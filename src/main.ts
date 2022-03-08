@@ -1,7 +1,9 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-
+import { initialize } from 'fireorm';
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_API_KEY,
   authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
@@ -10,7 +12,10 @@ const firebaseConfig = {
   messagingSenderId: import.meta.env.VITE_APP_MESSAGE_SENDER_ID,
   appId: import.meta.env.VITE_APP_APP_ID,
 };
+// initialize firebase
 initializeApp(firebaseConfig);
+// initialize fireorm with firebase
+initialize(getFirestore());
 
 import App from './App.vue';
 import router from './router';
