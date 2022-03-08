@@ -23,7 +23,6 @@ Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yours
 - [Vue Router](https://router.vuejs.org/)
 - [TailwindCSS](https://tailwindcss.com/docs/installation)
   - [tailwindcss-forms](https://github.com/tailwindlabs/tailwindcss-forms)
-- [Native UI](https://www.naiveui.com/en-US/dark/components/)
 - [Icon List](https://www.xicons.org/#/)
 - [Icon Usage](https://github.com/07akioni/xicons#usage)
 - [Firestore](https://firebase.google.com/docs/web/setup)
