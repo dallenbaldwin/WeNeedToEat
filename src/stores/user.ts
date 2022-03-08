@@ -17,6 +17,9 @@ export const useUserStore = defineStore({
     authenticated(): boolean {
       return !!this.user;
     },
+    userId(): string | undefined {
+      return this.user?.uid;
+    },
   },
   actions: {
     stateChanged(): Promise<void> {
