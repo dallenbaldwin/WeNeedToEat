@@ -1,8 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { initialize } from 'fireorm';
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_API_KEY,
@@ -14,8 +12,6 @@ const firebaseConfig = {
 };
 // initialize firebase
 initializeApp(firebaseConfig);
-// initialize fireorm with firebase
-initialize(getFirestore());
 
 import App from './App.vue';
 import router from './router';

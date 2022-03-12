@@ -92,16 +92,7 @@ const deleteAccount = () => {
   <H3>For the Nerds</H3>
   <H6>Client Side</H6>
   <List
-    :items="[
-      'Vue 3',
-      'Vite',
-      'Pinia',
-      'Vue Router',
-      'TailwindCSS',
-      'XIcons',
-      'FireORM.js',
-      'GitHub',
-    ]"
+    :items="['Vue 3', 'Vite', 'Pinia', 'Vue Router', 'TailwindCSS', 'XIcons', 'GitHub']"
   />
   <H6>Server Side</H6>
   <List :items="['Netlify', 'Firebase Authentication', 'Firestore Database']" />

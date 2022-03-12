@@ -1,4 +1,3 @@
-import { Collection, SubCollection, type ISubCollection } from 'fireorm';
 import { Meal } from './Meal.entity';
 
 export class Ingredient {
@@ -14,14 +13,9 @@ export class Step {
   description!: number;
 }
 
-@Collection()
 export class AtHome extends Meal {
   prepTime?: number;
   serves?: number;
-
-  @SubCollection(Ingredient)
-  ingredients?: ISubCollection<Ingredient>;
-
-  @SubCollection(Step)
-  steps?: ISubCollection<Step>;
+  ingredients?: Ingredient[];
+  steps?: Step[];
 }

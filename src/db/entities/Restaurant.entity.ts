@@ -1,4 +1,3 @@
-import { Collection } from 'fireorm';
 import { Meal } from './Meal.entity';
 
 export enum Price {
@@ -22,7 +21,6 @@ export enum Mode {
   BOAT = 'Boat',
 }
 
-@Collection()
 export class Restaurant extends Meal {
   price?: Price;
   distance?: number;
