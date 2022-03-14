@@ -1,3 +1,4 @@
+import { FirebaseClient } from '../utils/FirebaseClient';
 import { Meal } from './Meal.entity';
 
 export class Ingredient {
@@ -6,7 +7,6 @@ export class Ingredient {
   quantity?: number;
   measure?: string;
 }
-
 export class Step {
   id!: string;
   number!: number;
@@ -19,3 +19,7 @@ export class AtHome extends Meal {
   ingredients?: Ingredient[];
   steps?: Step[];
 }
+
+// TODO figure this out
+// const AtHomes = new FirebaseClient(AtHome)
+// export default AtHomes
