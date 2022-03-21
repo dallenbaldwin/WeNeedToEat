@@ -1,4 +1,4 @@
-import { Meal } from './Meal.entity';
+import type { Meal } from './Meal.model';
 
 export enum Price {
   CHEAP = '💲',
@@ -21,7 +21,7 @@ export enum Mode {
   BOAT = 'Boat',
 }
 
-export class Restaurant extends Meal {
+export interface Restaurant extends Meal {
   price?: Price;
   distance?: number;
   mode?: Mode;
