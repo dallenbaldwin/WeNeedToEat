@@ -1,3 +1,5 @@
+import { type FirestoreDataConverter, collection } from 'firebase/firestore';
+import { db } from '..';
 import type { Meal } from './Meal.model';
 
 export enum Price {
@@ -26,3 +28,24 @@ export interface Restaurant extends Meal {
   distance?: number;
   mode?: Mode;
 }
+
+const restaurantConverter: FirestoreDataConverter<Restaurant> = {
+  toFirestore: ({ id, name, user, distance, mode, price, tags }: Restaurant) => ({
+    id,
+    name,
+    user: user.id,
+    distance,
+    mode,
+    price,
+    tags,
+  }),
+  fromFirestore: ({ data }) => {
+    const { id, name, distance, mode, price, tags } = data() as Restaurant;
+    const userId = (data() as Restaurant).user as unknown as string;
+    return { id, name, distance, mode, price, tags } as Restaurant;
+  },
+};
+
+export const Restaurants = collection(db, 'restaurants').withConverter(
+  restaurantConverter
+);
