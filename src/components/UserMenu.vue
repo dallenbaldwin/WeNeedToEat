@@ -9,8 +9,7 @@ import { AccountCircleRound, SettingsRound } from '@vicons/material';
 import Button from './Button.vue';
 import LightDark from './LightDark.vue';
 import Textbox from '@/components/inputs/Textbox.vue';
-import { UsersClient } from '@/db/utils/FirestoreClient';
-import type { User } from '@/db/models/User.model';
+import { UsersClient } from '@/db/clients';
 
 const { user } = storeToRefs(useUserStore());
 const { logout } = useUserStore();
@@ -19,7 +18,6 @@ const settings = ref(false);
 const nickname = ref('');
 const save = async () => {
   settings.value = !settings.value;
-  nickname.value = '';
   await UsersClient.save({
     id: user.value?.uid,
     nickname: nickname.value,
