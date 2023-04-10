@@ -1,3 +1,6 @@
+/**
+ * an initializer function for the meals page
+ */
 export function init() {
   loadTable();
   $('#deleteMealBtn').click(deleteMeal);
@@ -9,6 +12,13 @@ export function init() {
   $('#modalAddTagInput').change(addTag);
 }
 
+/**
+ * adds meal options from `#mealInput`, `#tagInput` and `#typeSelect` to
+ * `localStorage`
+ *
+ * this will reload the page
+ * @returns
+ */
 function addMealOption() {
   if ($('#mealInput').val() === '' || $('#typeSelect').val() === '') return;
   let type = $('#typeSelect').val();
@@ -26,21 +36,38 @@ function addMealOption() {
   location.reload();
 }
 
+/**
+ * finds a meal from the `placeholder` of `#modalMealNameInput` and removes it
+ * from `localStorage`
+ *
+ * this will reload the page
+ */
 function deleteMeal() {
   let key = $('#modalMealNameInput').attr('placeholder');
   window.localStorage.removeItem(key);
   location.reload();
 }
 
+/**
+ * toggles the `#clearDBModal` modal
+ */
 function clearLocalStorage() {
   $('#clearDBModal').modal('toggle');
 }
 
+/**
+ * deletes all data from `localStorage`
+ *
+ * this will reload the page
+ */
 function confirmClearLocalStorage() {
   window.localStorage.clear();
   location.reload();
 }
 
+/**
+ * gets data from `localStorage` and populates `#mealsTable` with "jsx"
+ */
 function loadTable() {
   let db = Object.values(window.localStorage).map(x => JSON.parse(x));
   let table = $('#mealsTable');
@@ -53,6 +80,16 @@ function loadTable() {
   });
 }
 
+/**
+ * returns the "jsx" for a pill style tag
+ *
+ * tags with zero length are ignored
+ *
+ * if the tag is `Restaurant` or `Cook at Home`, it won't be deletable
+ *
+ * @param {string} tag the text to put inside the tag
+ * @returns nothing or poor man's jsx
+ */
 function pillTML(tag) {
   if (tag.length === 0) return;
   return `<li class="c-tag-pill">
@@ -65,6 +102,10 @@ function pillTML(tag) {
       </li>`;
 }
 
+/**
+ * populates and adds click hanlders for a comma separated list of tags
+ * defined with `#modalAddTagInput`
+ */
 function addTag() {
   let newTags = $('#modalAddTagInput').val().split(',');
   newTags.forEach(tag => {
@@ -74,10 +115,19 @@ function addTag() {
   $('#modalAddTagInput').val('');
 }
 
+/**
+ * a click handler to remove a pill from a list
+ */
 function killPill() {
   $(this).parent().remove();
 }
 
+/**
+ * toggles the `#editRecordModal` modal and populates it with metadata found in
+ * `localStorage` for the clicked row
+ *
+ * binds {@link killPill} to each pill generated with {@link pillTML}
+ */
 function editRow() {
   $('#editRecordModal').modal('toggle');
   let mealData = JSON.parse(window.localStorage.getItem($(this).children()[0].innerText));
@@ -90,6 +140,12 @@ function editRow() {
   $('.c-tag-pill-delete').click(killPill);
 }
 
+/**
+ * replaces metadata in `localStorage` with metadata for the key
+ * found in the `placeholder` for `#modalMealNameInput`
+ *
+ * this will reload the page
+ */
 function saveEdits() {
   let input = $('#modalMealNameInput');
   let mealName = input.val() === '' ? input.attr('placeholder') : input.val();
