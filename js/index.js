@@ -1,5 +1,5 @@
 /**
- * initializing function
+ * initializing function for the main page
  */
 export function init() {
   getInnout();
@@ -10,6 +10,16 @@ export function init() {
   $('#tagInput').change(addTag);
 }
 
+/**
+ * returns the "jsx" for a pill style tag
+ *
+ * tags with zero length are ignored
+ *
+ * if the tag is `Restaurant` or `Cook at Home`, it won't be deletable
+ *
+ * @param {string} tag the text to put inside the tag
+ * @returns nothing or poor man's jsx
+ */
 function pillTML(tag) {
   if (tag.length === 0) return;
   return `<li class="c-tag-pill">
@@ -22,6 +32,13 @@ function pillTML(tag) {
       </li>`;
 }
 
+/**
+ * - grabs and parses a comma separated string from the `#tagInput`
+ * - adds those tags to `#filterTagList`
+ * - binds the {@link killPill} click handler
+ * - clears `#tagInput`
+ * - adds tags to `sessionStorage`
+ */
 function addTag() {
   let newTags = $('#tagInput')
     .val()
@@ -44,6 +61,9 @@ function addTag() {
   }
 }
 
+/**
+ * a click handler to remove the target tag from the UI and `sessionStorage`
+ */
 function killPill() {
   let tag = $(this).parent().find('.c-tag-pill-data')[0].innerText;
   let tempDB = window.sessionStorage;
@@ -52,6 +72,9 @@ function killPill() {
   $(this).parent().remove();
 }
 
+/**
+ * the main logic function to help decide where/what to eat
+ */
 function decideToEat() {
   let db = Object.values(window.localStorage).map(x => JSON.parse(x));
   let tempDB = window.sessionStorage;
@@ -74,18 +97,30 @@ function decideToEat() {
     $('#resultsArea').append(`<p>No meals matched the type and tags</p>`);
 }
 
+/**
+ * - toggles state of the `#eatInBtn` and untoggles the `#eatOutBtn`
+ * - sets the `sessionStorage` value for `innout` to `Cook at Home`
+ */
 function eatIn() {
   $('#eatInBtn').removeClass('btn-outline-primary').addClass('btn-primary');
   $('#eatOutBtn').removeClass('btn-primary').addClass('btn-outline-primary');
   window.sessionStorage.setItem('innout', 'Cook at Home');
 }
 
+/**
+ * - toggles the state of the `#eatOutBtn` and untoggles the `#eatInBtn`
+ * - sets the `sessionStorage` value for `innout` to `Restaurant`
+ */
 function eatOut() {
   $('#eatOutBtn').removeClass('btn-outline-primary').addClass('btn-primary');
   $('#eatInBtn').removeClass('btn-primary').addClass('btn-outline-primary');
   window.sessionStorage.setItem('innout', 'Restaurant');
 }
 
+/**
+ * sets the state of `#eatOutBtn` and `#eatInBtn` based on the `sessionStorage`
+ * value of `innout`
+ */
 function getInnout() {
   let innout = window.sessionStorage.getItem('innout');
   if (innout === null) {
@@ -97,6 +132,9 @@ function getInnout() {
   }
 }
 
+/**
+ * grabs `tags` from `sessionStorage` and populates them in the UI
+ */
 function populateTags() {
   let tags = window.sessionStorage.getItem('tags');
   if (tags === null) return;
