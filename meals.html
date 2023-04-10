@@ -1,387 +1,374 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <title>Meal Options</title>
-      <!-- Required meta tags -->
-      <meta charset="utf-8" />
-      <meta
-         name="viewport"
-         content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
-      <!-- Bootstrap CSS -->
-      <link
-         rel="stylesheet"
-         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-         crossorigin="anonymous"
-      />
-      <link
-         rel="stylesheet"
-         href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
-         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
-         crossorigin="anonymous"
-      />
-      <style>
-         .c-clickable {
-            cursor: pointer;
-         }
-         .c-tag-pill {
-            background-color: #e9ecef;
-            border: none;
-            padding: 10px 20px;
-            display: inline-block;
-            margin: 4px 2px;
-            border-radius: 16px;
-         }
-         .c-tag-pill-delete {
-            cursor: pointer;
-            font-size: 1.25rem;
-            font-weight: 700;
-            line-height: 1;
-            text-shadow: 0 1px 0 #fff;
-            opacity: 0.5;
-         }
-         .c-start-over {
-            float: right;
-         }
-         @media screen and (max-width: 450px) {
-            .c-start-over {
-               float: none;
-            }
-         }
-      </style>
-   </head>
-   <body>
-      <div class="container mt-4">
-         <!-- clearDBModal -->
-         <div
-            class="modal fade"
-            id="clearDBModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="clearDBModalLabel"
-            aria-hidden="true"
-         >
-            <div class="modal-dialog" role="document">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <h5 class="modal-title" id="clearDBModalLabel">WARNING!</h5>
-                     <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                     >
-                        <span aria-hidden="true">&times;</span>
-                     </button>
-                  </div>
-                  <div class="modal-body">
-                     This will remove all your meal ideas. Are you sure you want to
-                     continue?
-                  </div>
-                  <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Cancel
-                     </button>
-                     <button id="confirmClearBtn" type="button" class="btn btn-danger">
-                        Yes
-                     </button>
-                  </div>
-               </div>
+  <head>
+    <title>Meal Options</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+      integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
+      crossorigin="anonymous"
+    />
+    <style>
+      .c-clickable {
+        cursor: pointer;
+      }
+      .c-tag-pill {
+        background-color: #e9ecef;
+        border: none;
+        padding: 10px 20px;
+        display: inline-block;
+        margin: 4px 2px;
+        border-radius: 16px;
+      }
+      .c-tag-pill-delete {
+        cursor: pointer;
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1;
+        text-shadow: 0 1px 0 #fff;
+        opacity: 0.5;
+      }
+      .c-start-over {
+        float: right;
+      }
+      @media screen and (max-width: 450px) {
+        .c-start-over {
+          float: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <!-- clearDBModal -->
+      <div
+        class="modal fade"
+        id="clearDBModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="clearDBModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="clearDBModalLabel">WARNING!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-         </div>
-         <!-- editRecordModal -->
-         <div
-            class="modal fade"
-            id="editRecordModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="editRecordModalLabel"
-            aria-hidden="true"
-         >
-            <div class="modal-dialog" role="document">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <h5 class="modal-title" id="editRecordModalLabel">Edit this Meal</h5>
-                     <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                     >
-                        <span aria-hidden="true">&times;</span>
-                     </button>
-                  </div>
-                  <div class="modal-body">
-                     <div class="form-group">
-                        <label for="modalMealNameInput">Meal Name</label>
-                        <input
-                           type="text"
-                           name="modalMealNameInput"
-                           id="modalMealNameInput"
-                           class="form-control"
-                           aria-describedby="modalMealNameHelp"
-                        />
-                        <small id="modalMealNameHelp" class="text-muted"
-                           >Type in the new meal name</small
-                        >
-                     </div>
-                     <div class="form-group">
-                        <label for="modalAddTagInput">Tags</label>
-                        <input
-                           type="text"
-                           name="modalAddTagInput"
-                           id="modalAddTagInput"
-                           class="form-control"
-                           aria-describedby="modalAddTagHelp"
-                        />
-                        <small id="modalAddTagHelp" class="text-muted"
-                           >Type in a new tag or comma separated list of tags</small
-                        >
-                     </div>
-                     <div id="editModalTagList"></div>
-                  </div>
-                  <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Close
-                     </button>
-                     <button id="deleteMealBtn" type="button" class="btn btn-warning">
-                        Delete
-                     </button>
-                     <button id="saveMealBtn" type="button" class="btn btn-primary">
-                        Save changes
-                     </button>
-                  </div>
-               </div>
+            <div class="modal-body">
+              This will remove all your meal ideas. Are you sure you want to continue?
             </div>
-         </div>
-         <div class="row">
-            <div class="col-sm-5">
-               <div class="row">
-                  <div class="col-sm-2">
-                     <a
-                        name="homeBtn"
-                        id="homeBtn"
-                        class="btn btn-primary mt-2 mb-2"
-                        href="./index.html"
-                        role="button"
-                        ><i class="fa fa-home" aria-hidden="true"></i
-                     ></a>
-                  </div>
-                  <div class="col-sm-10">
-                     <h1>Add a Meal</h1>
-                  </div>
-               </div>
-
-               <div class="form-group">
-                  <label for="mealInput">Meal Name</label>
-                  <input
-                     type="text"
-                     name="mealInput"
-                     id="mealInput"
-                     class="form-control"
-                     aria-describedby="mealHelp"
-                  />
-                  <small id="mealHelp" class="text-muted"
-                     >What's the name of this meal or restaurant?</small
-                  >
-               </div>
-               <div class="form-group">
-                  <label for="typeSelect">Meal Type</label>
-                  <select
-                     class="form-control"
-                     name="typeSelect"
-                     id="typeSelect"
-                     aria-describedby="typeHelp"
-                  >
-                     <option selected></option>
-                     <option value="in">Cook at Home</option>
-                     <option value="out">Restaurant</option>
-                  </select>
-                  <small id="typeHelp" class="text-muted">
-                     What kind of meal is this?
-                  </small>
-               </div>
-               <div class="form-group">
-                  <label for="tagInput">Tags</label>
-                  <input
-                     type="text"
-                     name="tagInput"
-                     id="tagInput"
-                     class="form-control"
-                     placeholder=""
-                     aria-describedby="tagHelp"
-                  />
-                  <small id="tagHelp" class="text-muted"
-                     >What are some tags to help decide later? Enter a comma separated
-                     list</small
-                  >
-               </div>
-               <button id="doneBtn" type="button" class="btn btn-primary">Done</button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Cancel
+              </button>
+              <button id="confirmClearBtn" type="button" class="btn btn-danger">
+                Yes
+              </button>
             </div>
-            <div class="col-sm-7">
-               <div class="row">
-                  <div class="col-sm-6"><h1>Meals</h1></div>
-                  <div class="col-sm-6">
-                     <button
-                        id="resetBtn"
-                        type="button"
-                        class="btn btn-warning mb-2 mt-2 c-start-over"
-                     >
-                        Start Over
-                     </button>
-                  </div>
-               </div>
-               <div class="col-sm-12">
-                  <table class="table table-hover">
-                     <thead>
-                        <tr>
-                           <th>Meal</th>
-                           <th>Tags</th>
-                        </tr>
-                     </thead>
-                     <tbody id="mealsTable"></tbody>
-                  </table>
-               </div>
-            </div>
-         </div>
+          </div>
+        </div>
       </div>
-      <!-- Optional JavaScript -->
-      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-      <script
-         src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-         crossorigin="anonymous"
-      ></script>
-      <script
-         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-         crossorigin="anonymous"
-      ></script>
-      <script
-         src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-         crossorigin="anonymous"
-      ></script>
-      <script
-         defer
-         src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
-         integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
-         crossorigin="anonymous"
-      ></script>
-      <script>
-         function addMealOption() {
-            if ($('#mealInput').val() === '' || $('#typeSelect').val() === '') return;
-            let type = $('#typeSelect').val();
-            let tags = $('#tagInput')
-               .val()
-               .split(',')
-               .map(x => x.trim())
-               .filter(x => x.length > 0);
-            tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
-            let row = {
-               name: $('#mealInput').val(),
-               tags: tags,
-            };
-            window.localStorage.setItem(row.name, JSON.stringify(row));
-            location.reload();
-         }
+      <!-- editRecordModal -->
+      <div
+        class="modal fade"
+        id="editRecordModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="editRecordModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editRecordModalLabel">Edit this Meal</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="modalMealNameInput">Meal Name</label>
+                <input
+                  type="text"
+                  name="modalMealNameInput"
+                  id="modalMealNameInput"
+                  class="form-control"
+                  aria-describedby="modalMealNameHelp"
+                />
+                <small id="modalMealNameHelp" class="text-muted"
+                  >Type in the new meal name</small
+                >
+              </div>
+              <div class="form-group">
+                <label for="modalAddTagInput">Tags</label>
+                <input
+                  type="text"
+                  name="modalAddTagInput"
+                  id="modalAddTagInput"
+                  class="form-control"
+                  aria-describedby="modalAddTagHelp"
+                />
+                <small id="modalAddTagHelp" class="text-muted"
+                  >Type in a new tag or comma separated list of tags</small
+                >
+              </div>
+              <div id="editModalTagList"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Close
+              </button>
+              <button id="deleteMealBtn" type="button" class="btn btn-warning">
+                Delete
+              </button>
+              <button id="saveMealBtn" type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-5">
+          <div class="row">
+            <div class="col-sm-2">
+              <a
+                name="homeBtn"
+                id="homeBtn"
+                class="btn btn-primary mt-2 mb-2"
+                href="./index.html"
+                role="button"
+                ><i class="fa fa-home" aria-hidden="true"></i
+              ></a>
+            </div>
+            <div class="col-sm-10">
+              <h1>Add a Meal</h1>
+            </div>
+          </div>
 
-         function deleteMeal() {
-            let key = $('#modalMealNameInput').attr('placeholder');
-            window.localStorage.removeItem(key);
-            location.reload();
-         }
+          <div class="form-group">
+            <label for="mealInput">Meal Name</label>
+            <input
+              type="text"
+              name="mealInput"
+              id="mealInput"
+              class="form-control"
+              aria-describedby="mealHelp"
+            />
+            <small id="mealHelp" class="text-muted"
+              >What's the name of this meal or restaurant?</small
+            >
+          </div>
+          <div class="form-group">
+            <label for="typeSelect">Meal Type</label>
+            <select
+              class="form-control"
+              name="typeSelect"
+              id="typeSelect"
+              aria-describedby="typeHelp"
+            >
+              <option selected></option>
+              <option value="in">Cook at Home</option>
+              <option value="out">Restaurant</option>
+            </select>
+            <small id="typeHelp" class="text-muted"> What kind of meal is this? </small>
+          </div>
+          <div class="form-group">
+            <label for="tagInput">Tags</label>
+            <input
+              type="text"
+              name="tagInput"
+              id="tagInput"
+              class="form-control"
+              placeholder=""
+              aria-describedby="tagHelp"
+            />
+            <small id="tagHelp" class="text-muted"
+              >What are some tags to help decide later? Enter a comma separated
+              list</small
+            >
+          </div>
+          <button id="doneBtn" type="button" class="btn btn-primary">Done</button>
+        </div>
+        <div class="col-sm-7">
+          <div class="row">
+            <div class="col-sm-6"><h1>Meals</h1></div>
+            <div class="col-sm-6">
+              <button
+                id="resetBtn"
+                type="button"
+                class="btn btn-warning mb-2 mt-2 c-start-over"
+              >
+                Start Over
+              </button>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Meal</th>
+                  <th>Tags</th>
+                </tr>
+              </thead>
+              <tbody id="mealsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+      integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function addMealOption() {
+        if ($('#mealInput').val() === '' || $('#typeSelect').val() === '') return;
+        let type = $('#typeSelect').val();
+        let tags = $('#tagInput')
+          .val()
+          .split(',')
+          .map(x => x.trim())
+          .filter(x => x.length > 0);
+        tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
+        let row = {
+          name: $('#mealInput').val(),
+          tags: tags,
+        };
+        window.localStorage.setItem(row.name, JSON.stringify(row));
+        location.reload();
+      }
 
-         function clearLocalStorage() {
-            $('#clearDBModal').modal('toggle');
-         }
+      function deleteMeal() {
+        let key = $('#modalMealNameInput').attr('placeholder');
+        window.localStorage.removeItem(key);
+        location.reload();
+      }
 
-         function confirmClearLocalStorage() {
-            window.localStorage.clear();
-            location.reload();
-         }
+      function clearLocalStorage() {
+        $('#clearDBModal').modal('toggle');
+      }
 
-         function loadTable() {
-            let db = Object.values(window.localStorage).map(x => JSON.parse(x));
-            let table = $('#mealsTable');
-            table.empty();
-            db.forEach(row => {
-               table.append(`<tr class="c-clickable">
+      function confirmClearLocalStorage() {
+        window.localStorage.clear();
+        location.reload();
+      }
+
+      function loadTable() {
+        let db = Object.values(window.localStorage).map(x => JSON.parse(x));
+        let table = $('#mealsTable');
+        table.empty();
+        db.forEach(row => {
+          table.append(`<tr class="c-clickable">
                   <td>${row.name}</td>
                   <td>${row.tags.join(', ')}</td>
                </tr>`);
-            });
-         }
+        });
+      }
 
-         function pillTML(tag) {
-            if (tag.length === 0) return;
-            return `<li class="c-tag-pill">
+      function pillTML(tag) {
+        if (tag.length === 0) return;
+        return `<li class="c-tag-pill">
                <span class="c-tag-pill-data">${tag}</span>
                ${
-                  tag === 'Restaurant' || tag === 'Cook at Home'
-                     ? ''
-                     : `<span class="c-tag-pill-delete">&times;</span>`
+                 tag === 'Restaurant' || tag === 'Cook at Home'
+                   ? ''
+                   : `<span class="c-tag-pill-delete">&times;</span>`
                }
             </li>`;
-         }
+      }
 
-         function addTag() {
-            let newTags = $('#modalAddTagInput').val().split(',');
-            newTags.forEach(tag => {
-               $('#editModalTagList').append(pillTML(tag));
-            });
-            $('.c-tag-pill-delete').click(killPill);
-            $('#modalAddTagInput').val('');
-         }
+      function addTag() {
+        let newTags = $('#modalAddTagInput').val().split(',');
+        newTags.forEach(tag => {
+          $('#editModalTagList').append(pillTML(tag));
+        });
+        $('.c-tag-pill-delete').click(killPill);
+        $('#modalAddTagInput').val('');
+      }
 
-         function killPill() {
-            $(this).parent().remove();
-         }
+      function killPill() {
+        $(this).parent().remove();
+      }
 
-         function editRow() {
-            $('#editRecordModal').modal('toggle');
-            let mealData = JSON.parse(
-               window.localStorage.getItem($(this).children()[0].innerText)
-            );
-            $('#modalMealNameInput').attr('placeholder', mealData.name);
-            let list = $('#editModalTagList');
-            list.empty();
-            mealData.tags.forEach(tag => {
-               $('#editModalTagList').append(pillTML(tag));
-            });
-            $('.c-tag-pill-delete').click(killPill);
-         }
+      function editRow() {
+        $('#editRecordModal').modal('toggle');
+        let mealData = JSON.parse(
+          window.localStorage.getItem($(this).children()[0].innerText)
+        );
+        $('#modalMealNameInput').attr('placeholder', mealData.name);
+        let list = $('#editModalTagList');
+        list.empty();
+        mealData.tags.forEach(tag => {
+          $('#editModalTagList').append(pillTML(tag));
+        });
+        $('.c-tag-pill-delete').click(killPill);
+      }
 
-         function saveEdits() {
-            let input = $('#modalMealNameInput');
-            let mealName = input.val() === '' ? input.attr('placeholder') : input.val();
-            let tags = [];
-            $('#editModalTagList')
-               .find('.c-tag-pill-data')
-               .each(function () {
-                  tags.push($(this).text());
-               });
-            let newData = {
-               name: mealName,
-               tags: tags,
-            };
-            let db = window.localStorage;
-            db.removeItem(input.attr('placeholder'));
-            db.setItem(mealName, JSON.stringify(newData));
-            location.reload();
-         }
+      function saveEdits() {
+        let input = $('#modalMealNameInput');
+        let mealName = input.val() === '' ? input.attr('placeholder') : input.val();
+        let tags = [];
+        $('#editModalTagList')
+          .find('.c-tag-pill-data')
+          .each(function () {
+            tags.push($(this).text());
+          });
+        let newData = {
+          name: mealName,
+          tags: tags,
+        };
+        let db = window.localStorage;
+        db.removeItem(input.attr('placeholder'));
+        db.setItem(mealName, JSON.stringify(newData));
+        location.reload();
+      }
 
-         $(document).ready(() => {
-            loadTable();
-            $('#deleteMealBtn').click(deleteMeal);
-            $('#resetBtn').click(clearLocalStorage);
-            $('#confirmClearBtn').click(confirmClearLocalStorage);
-            $('#doneBtn').click(addMealOption);
-            $('tr').click(editRow);
-            $('#saveMealBtn').click(saveEdits);
-            $('#modalAddTagInput').change(addTag);
-         });
-      </script>
-   </body>
+      $(document).ready(() => {
+        loadTable();
+        $('#deleteMealBtn').click(deleteMeal);
+        $('#resetBtn').click(clearLocalStorage);
+        $('#confirmClearBtn').click(confirmClearLocalStorage);
+        $('#doneBtn').click(addMealOption);
+        $('tr').click(editRow);
+        $('#saveMealBtn').click(saveEdits);
+        $('#modalAddTagInput').change(addTag);
+      });
+    </script>
+  </body>
 </html>

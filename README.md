@@ -6,4 +6,4 @@ We also have a really hard time deciding what to cook when we're not too lazy to
 
 ## App
 
-Go to [Netlify](https://weneedtoeat.netlify.app) to experience the app for yourself.
+Go to [Netlify](https://weneedtoeat.dallenbaldwin.dev) to experience the app for yourself.
