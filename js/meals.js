@@ -1,3 +1,14 @@
+export function init() {
+  loadTable();
+  $('#deleteMealBtn').click(deleteMeal);
+  $('#resetBtn').click(clearLocalStorage);
+  $('#confirmClearBtn').click(confirmClearLocalStorage);
+  $('#doneBtn').click(addMealOption);
+  $('tr').click(editRow);
+  $('#saveMealBtn').click(saveEdits);
+  $('#modalAddTagInput').change(addTag);
+}
+
 function addMealOption() {
   if ($('#mealInput').val() === '' || $('#typeSelect').val() === '') return;
   let type = $('#typeSelect').val();

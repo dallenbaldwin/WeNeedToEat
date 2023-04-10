@@ -1,7 +1,7 @@
 /**
  * initializing function
  */
-function init() {
+export function init() {
   getInnout();
   populateTags();
   $('#decideBtn').click(decideToEat);

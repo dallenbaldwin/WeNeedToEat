@@ -86,8 +86,8 @@
       integrity="sha256-Jvh9+A4HNbbWsWl1Dw7kAzNsU3y8elGIjLnUSUNMtLg="
       crossorigin="anonymous"
     ></script>
-    <script type="module" src="./js/index.js"></script>
-    <script>
+    <script type="module">
+      import { init } from './js/index.js';
       $(document).ready(() => {
         init();
       });

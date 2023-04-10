@@ -228,17 +228,10 @@
       integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
       crossorigin="anonymous"
     ></script>
-    <script type="module" src="./js/meals.js"></script>
-    <script>
+    <script type="module">
+      import { init } from './js/meals.js';
       $(document).ready(() => {
-        loadTable();
-        $('#deleteMealBtn').click(deleteMeal);
-        $('#resetBtn').click(clearLocalStorage);
-        $('#confirmClearBtn').click(confirmClearLocalStorage);
-        $('#doneBtn').click(addMealOption);
-        $('tr').click(editRow);
-        $('#saveMealBtn').click(saveEdits);
-        $('#modalAddTagInput').change(addTag);
+        init();
       });
     </script>
   </body>
