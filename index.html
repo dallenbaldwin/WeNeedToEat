@@ -1,233 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <title>We Need to Eat</title>
-      <!-- Required meta tags -->
-      <meta charset="utf-8" />
-      <meta
-         name="viewport"
-         content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
+  <head>
+    <title>We Need to Eat</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="jumbotron">
+            <h1 class="display-3">We really need to eat</h1>
+            <p class="lead">
+              What should we eat?
+              <a class="btn btn-primary c-right" href="./meals.html" role="button"
+                >What are the options?</a
+              >
+            </p>
+            <hr class="mb-2" />
 
-      <!-- Bootstrap CSS -->
-      <link
-         rel="stylesheet"
-         href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-         crossorigin="anonymous"
-      />
-      <style>
-         .c-clickable {
-            cursor: pointer;
-         }
-         .c-tag-pill {
-            background-color: #ffffff;
-            padding: 10px 20px;
-            display: inline-block;
-            margin: 4px 2px;
-            border-radius: 16px;
-         }
-         .c-tag-pill-delete {
-            cursor: pointer;
-            font-size: 1.25rem;
-            font-weight: 700;
-            line-height: 1;
-            text-shadow: 0 1px 0 #fff;
-            opacity: 0.5;
-         }
-         .c-options {
-            float: right;
-         }
-         @media screen and (max-width: 450px) {
-            .c-options {
-               float: none;
-            }
-         }
-      </style>
-   </head>
-   <body>
-      <div class="container">
-         <div class="row">
-            <div class="col-12">
-               <div class="jumbotron">
-                  <h1 class="display-3">We really need to eat</h1>
-                  <p class="lead">
-                     What should we eat?
-                     <a
-                        class="btn btn-primary c-options"
-                        href="./meals.html"
-                        role="button"
-                        >What are the options?</a
-                     >
-                  </p>
-                  <hr class="mb-2" />
-
-                  <div class="mt-1">
-                     <button
-                        id="eatInBtn"
-                        type="button"
-                        class="btn btn-outline-primary btn-lg"
-                     >
-                        Eat in
-                     </button>
-                     <button
-                        id="eatOutBtn"
-                        type="button"
-                        class="btn btn-outline-primary btn-lg"
-                     >
-                        Eat out
-                     </button>
-                  </div>
-
-                  <div class="form-group mt-1">
-                     <label for="tagInput">Tags</label>
-                     <input
-                        type="text"
-                        name="tagInput"
-                        id="tagInput"
-                        class="form-control"
-                        placeholder="Type in a tag or comma separated list of tags"
-                        aria-describedby="tagInputHelp"
-                     />
-                     <small id="tagInputHelp" class="text-muted d-none"
-                        >Type in a tag or comma separated list of tags</small
-                     >
-                  </div>
-                  <div id="filterTagList" class="mb-2"></div>
-                  <button id="decideBtn" type="button" class="btn btn-primary btn-lg">
-                     Tell us what to eat already!
-                  </button>
-                  <div id="resultsArea"></div>
-               </div>
+            <div class="mt-1">
+              <button id="eatInBtn" type="button" class="btn btn-outline-primary btn-lg">
+                Eat in
+              </button>
+              <button id="eatOutBtn" type="button" class="btn btn-outline-primary btn-lg">
+                Eat out
+              </button>
             </div>
-         </div>
+
+            <div class="form-group mt-1">
+              <label for="tagInput">Tags</label>
+              <input
+                type="text"
+                name="tagInput"
+                id="tagInput"
+                class="form-control"
+                placeholder="Type in a tag or comma separated list of tags"
+                aria-describedby="tagInputHelp"
+              />
+              <small id="tagInputHelp" class="text-muted d-none"
+                >Type in a tag or comma separated list of tags</small
+              >
+            </div>
+            <div id="filterTagList" class="mb-2"></div>
+            <button id="decideBtn" type="button" class="btn btn-primary btn-lg">
+              Tell us what to eat already!
+            </button>
+            <div id="resultsArea"></div>
+          </div>
+        </div>
       </div>
-      <!-- Optional JavaScript -->
-      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-      <script
-         src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-         crossorigin="anonymous"
-      ></script>
-      <script
-         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-         crossorigin="anonymous"
-      ></script>
-      <script
-         src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-         crossorigin="anonymous"
-      ></script>
-      <script
-         src="https://cdn.jsdelivr.net/npm/lodash@4.17.19/lodash.min.js"
-         integrity="sha256-Jvh9+A4HNbbWsWl1Dw7kAzNsU3y8elGIjLnUSUNMtLg="
-         crossorigin="anonymous"
-      ></script>
-      <script>
-         function pillTML(tag) {
-            if (tag.length === 0) return;
-            return `<li class="c-tag-pill">
-               <span class="c-tag-pill-data">${tag}</span>
-               ${
-                  tag === 'Restaurant' || tag === 'Cook at Home'
-                     ? ''
-                     : `<span class="c-tag-pill-delete">&times;</span>`
-               }
-            </li>`;
-         }
-
-         function addTag() {
-            let newTags = $('#tagInput')
-               .val()
-               .split(',')
-               .map(x => x.trim())
-               .filter(x => x.length > 0);
-            newTags.forEach(tag => {
-               $('#filterTagList').append(pillTML(tag));
-            });
-            $('.c-tag-pill-delete').click(killPill);
-            $('#tagInput').val('');
-            // add new tags to the existing tags
-            let tempDB = window.sessionStorage;
-            let currentTags = tempDB.getItem('tags');
-            if (currentTags === null) {
-               tempDB.setItem('tags', JSON.stringify(newTags));
-            } else {
-               let totalTags = JSON.parse(currentTags).concat(newTags);
-               tempDB.setItem('tags', JSON.stringify(totalTags));
-            }
-         }
-
-         function killPill() {
-            let tag = $(this).parent().find('.c-tag-pill-data')[0].innerText;
-            let tempDB = window.sessionStorage;
-            let tags = JSON.parse(tempDB.getItem('tags'));
-            tempDB.setItem('tags', JSON.stringify(tags.filter(x => x !== tag)));
-            $(this).parent().remove();
-         }
-
-         function decideToEat() {
-            let db = Object.values(window.localStorage).map(x => JSON.parse(x));
-            let tempDB = window.sessionStorage;
-            let tags = JSON.parse(tempDB.getItem('tags'));
-            let type = tempDB.getItem('innout').toLowerCase();
-            // remove entries that aren't the selected type
-            let results = db.filter(entry =>
-               entry.tags.map(tag => tag.toLowerCase()).includes(type)
-            );
-            // remove entries that don't have the desired tags
-            if (tags && tags.length > 0)
-               results = results.filter(x => x.tags.some(y => tags.includes(y)));
-
-            let rand =
-               results.map(x => x.name)[Math.floor(Math.random() * results.length)] ||
-               'Nothing...';
-            // <h1 class="display-4"></h1>
-
-            $('#resultsArea').empty().append(`<h1 class="display-4">${rand}</h1>`);
-            if (rand === 'Nothing...')
-               $('#resultsArea').append(`<p>No meals matched the type and tags</p>`);
-         }
-
-         function eatIn() {
-            $('#eatInBtn').removeClass('btn-outline-primary').addClass('btn-primary');
-            $('#eatOutBtn').removeClass('btn-primary').addClass('btn-outline-primary');
-            window.sessionStorage.setItem('innout', 'Cook at Home');
-         }
-
-         function eatOut() {
-            $('#eatOutBtn').removeClass('btn-outline-primary').addClass('btn-primary');
-            $('#eatInBtn').removeClass('btn-primary').addClass('btn-outline-primary');
-            window.sessionStorage.setItem('innout', 'Restaurant');
-         }
-
-         function getInnout() {
-            let innout = window.sessionStorage.getItem('innout');
-            if (innout === null) {
-               eatIn();
-            } else if (innout === 'Cook at Home') {
-               eatIn();
-            } else if (innout === 'Restaurant') {
-               eatOut();
-            }
-         }
-
-         function populateTags() {
-            let tags = window.sessionStorage.getItem('tags');
-            if (tags === null) return;
-            JSON.parse(tags).forEach(tag => $('#filterTagList').append(pillTML(tag)));
-            $('.c-tag-pill-delete').click(killPill);
-         }
-
-         $(document).ready(() => {
-            getInnout();
-            populateTags();
-            $('#decideBtn').click(decideToEat);
-            $('#eatInBtn').click(eatIn);
-            $('#eatOutBtn').click(eatOut);
-            $('#tagInput').change(addTag);
-         });
-      </script>
-   </body>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/lodash@4.17.19/lodash.min.js"
+      integrity="sha256-Jvh9+A4HNbbWsWl1Dw7kAzNsU3y8elGIjLnUSUNMtLg="
+      crossorigin="anonymous"
+    ></script>
+    <script type="module">
+      import { init } from './js/index.js';
+      $(document).ready(() => {
+        init();
+      });
+    </script>
+  </body>
 </html>
