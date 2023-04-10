@@ -2,10 +2,11 @@
   "name": "weneedtoeat",
   "version": "1.0.0",
   "description": "My wife and I have a hard time picking where we're going to eat when we're too lazy to make food.",
-  "main": "index.js",
   "scripts": {
-    "build": "parcel build *.html"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dallenbaldwin/WeNeedToEat.git"
@@ -13,10 +14,7 @@
   "author": "Dallen Baldwin",
   "license": "UNLICENSE",
   "homepage": "https://github.com/dallenbaldwin/WeNeedToEat#readme",
-  "dependencies": {
-    "parcel": "^1.12.4"
-  },
   "devDependencies": {
-    "parcel-bundler": "^1.12.4"
+    "parcel": "^2.8.3"
   }
 }
