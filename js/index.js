@@ -17,7 +17,7 @@ function pillTML(tag) {
          ${
            tag === 'Restaurant' || tag === 'Cook at Home'
              ? ''
-             : `<span class="c-tag-pill-delete">&times;</span>`
+             : `<span class="c-tag-pill-delete c-clickable">&times;</span>`
          }
       </li>`;
 }
