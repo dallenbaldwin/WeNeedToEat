@@ -1,3 +1,15 @@
+/**
+ * initializing function
+ */
+function init() {
+  getInnout();
+  populateTags();
+  $('#decideBtn').click(decideToEat);
+  $('#eatInBtn').click(eatIn);
+  $('#eatOutBtn').click(eatOut);
+  $('#tagInput').change(addTag);
+}
+
 function pillTML(tag) {
   if (tag.length === 0) return;
   return `<li class="c-tag-pill">
