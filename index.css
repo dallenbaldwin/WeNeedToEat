@@ -2,22 +2,22 @@
   cursor: pointer;
 }
 
-.c-options {
+.c-right {
   float: right;
 }
 
 .c-tag-pill {
-  /* TODO multiple background colors */
-  /* background-color: #ffffff; */
-  /* background-color: #e9ecef; */
+  background-color: #fff;
   padding: 10px 20px;
   display: inline-block;
   margin: 4px 2px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ced4da;
   border-radius: 16px;
 }
 
 .c-tag-pill-delete {
-  cursor: pointer;
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1;
@@ -25,15 +25,8 @@
   opacity: 0.5;
 }
 
-.c-start-over {
-  float: right;
-}
-
 @media screen and (max-width: 450px) {
-  .c-options {
-    float: none;
-  }
-  .c-start-over {
+  .c-right {
     float: none;
   }
 }
