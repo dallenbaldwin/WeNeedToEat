@@ -1,3 +1,7 @@
+// @ts-check
+
+import { pillTML, valToStrings } from './shared.js';
+
 /**
  * an initializer function for the meals page
  */
@@ -20,18 +24,12 @@ export function init() {
  * @returns
  */
 function addMealOption() {
-  if ($('#mealInput').val() === '' || $('#typeSelect').val() === '') return;
-  let type = $('#typeSelect').val();
-  let tags = $('#tagInput')
-    .val()
-    .split(',')
-    .map((x) => x.trim())
-    .filter((x) => x.length > 0);
+  const [name] = valToStrings($('#mealInput').val());
+  const [type] = valToStrings($('#typeSelect').val());
+  if (!name || !type) return;
+  const tags = valToStrings($('#tagInput').val());
   tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
-  let row = {
-    name: $('#mealInput').val(),
-    tags: tags,
-  };
+  const row = { name, tags };
   window.localStorage.setItem(row.name, JSON.stringify(row));
   location.reload();
 }
@@ -43,7 +41,8 @@ function addMealOption() {
  * this will reload the page
  */
 function deleteMeal() {
-  let key = $('#modalMealNameInput').attr('placeholder');
+  const key = $('#modalMealNameInput').attr('placeholder');
+  if (!key) return;
   window.localStorage.removeItem(key);
   location.reload();
 }
@@ -52,6 +51,7 @@ function deleteMeal() {
  * toggles the `#clearDBModal` modal
  */
 function clearLocalStorage() {
+  // @ts-expect-error bootstrap wants to you access the modal this way
   $('#clearDBModal').modal('toggle');
 }
 
@@ -81,36 +81,12 @@ function loadTable() {
 }
 
 /**
- * returns the "jsx" for a pill style tag
- *
- * tags with zero length are ignored
- *
- * if the tag is `Restaurant` or `Cook at Home`, it won't be deletable
- *
- * @param {string} tag the text to put inside the tag
- * @returns nothing or poor man's jsx
- */
-function pillTML(tag) {
-  if (tag.length === 0) return;
-  return `<li class="c-tag-pill">
-         <span class="c-tag-pill-data">${tag}</span>
-         ${
-           tag === 'Restaurant' || tag === 'Cook at Home'
-             ? ''
-             : `<span class="c-tag-pill-delete">&times;</span>`
-         }
-      </li>`;
-}
-
-/**
  * populates and adds click hanlders for a comma separated list of tags
  * defined with `#modalAddTagInput`
  */
 function addTag() {
-  let newTags = $('#modalAddTagInput').val().split(',');
-  newTags.forEach((tag) => {
-    $('#editModalTagList').append(pillTML(tag));
-  });
+  const tags = valToStrings($('#modalAddTagInput').val());
+  tags.forEach((tag) => $('#editModalTagList').append(pillTML(tag)));
   $('.c-tag-pill-delete').click(killPill);
   $('#modalAddTagInput').val('');
 }
@@ -129,14 +105,15 @@ function killPill() {
  * binds {@link killPill} to each pill generated with {@link pillTML}
  */
 function editRow() {
+  // @ts-expect-error bootstrap wants to you access the modal this way
   $('#editRecordModal').modal('toggle');
-  let mealData = JSON.parse(window.localStorage.getItem($(this).children()[0].innerText));
+  const key = window.localStorage.getItem($(this).children()[0].innerText);
+  if (!key) return;
+  const mealData = JSON.parse(key);
   $('#modalMealNameInput').attr('placeholder', mealData.name);
-  let list = $('#editModalTagList');
+  const list = $('#editModalTagList');
   list.empty();
-  mealData.tags.forEach((tag) => {
-    $('#editModalTagList').append(pillTML(tag));
-  });
+  mealData.tags.forEach((tag) => $('#editModalTagList').append(pillTML(tag)));
   $('.c-tag-pill-delete').click(killPill);
 }
 
@@ -147,20 +124,19 @@ function editRow() {
  * this will reload the page
  */
 function saveEdits() {
-  let input = $('#modalMealNameInput');
-  let mealName = input.val() === '' ? input.attr('placeholder') : input.val();
-  let tags = [];
+  const input = $('#modalMealNameInput');
+  const [inputVal] = valToStrings(input.val());
+  const placeholder = input.attr('placeholder');
+  const name = !inputVal ? placeholder : inputVal;
+  if (!name) throw new Error('name is undefined!');
+  const tags = [];
   $('#editModalTagList')
     .find('.c-tag-pill-data')
     .each(function () {
       tags.push($(this).text());
     });
-  let newData = {
-    name: mealName,
-    tags: tags,
-  };
-  let db = window.localStorage;
-  db.removeItem(input.attr('placeholder'));
-  db.setItem(mealName, JSON.stringify(newData));
+  const db = window.localStorage;
+  db.removeItem(name);
+  db.setItem(name, JSON.stringify({ name, tags }));
   location.reload();
 }

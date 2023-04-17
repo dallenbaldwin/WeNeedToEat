@@ -1,3 +1,7 @@
+//@ts-check
+
+import { pillTML, valToStrings } from './shared.js';
+
 /**
  * initializing function for the main page
  */
@@ -11,28 +15,6 @@ export function init() {
 }
 
 /**
- * returns the "jsx" for a pill style tag
- *
- * tags with zero length are ignored
- *
- * if the tag is `Restaurant` or `Cook at Home`, it won't be deletable
- *
- * @param {string} tag the text to put inside the tag
- * @returns nothing or poor man's jsx
- */
-function pillTML(tag) {
-  if (tag.length === 0) return;
-  return `<li class="c-tag-pill">
-         <span class="c-tag-pill-data">${tag}</span>
-         ${
-           tag === 'Restaurant' || tag === 'Cook at Home'
-             ? ''
-             : `<span class="c-tag-pill-delete c-clickable">&times;</span>`
-         }
-      </li>`;
-}
-
-/**
  * - grabs and parses a comma separated string from the `#tagInput`
  * - adds those tags to `#filterTagList`
  * - binds the {@link killPill} click handler
@@ -40,24 +22,18 @@ function pillTML(tag) {
  * - adds tags to `sessionStorage`
  */
 function addTag() {
-  let newTags = $('#tagInput')
-    .val()
-    .split(',')
-    .map((x) => x.trim())
-    .filter((x) => x.length > 0);
-  newTags.forEach((tag) => {
-    $('#filterTagList').append(pillTML(tag));
-  });
+  const tags = valToStrings($('#tagInput').val());
+  tags.forEach((tag) => $('#filterTagList').append(pillTML(tag)));
   $('.c-tag-pill-delete').click(killPill);
   $('#tagInput').val('');
   // add new tags to the existing tags
-  let tempDB = window.sessionStorage;
-  let currentTags = tempDB.getItem('tags');
+  const session = window.sessionStorage;
+  const currentTags = session.getItem('tags');
   if (currentTags === null) {
-    tempDB.setItem('tags', JSON.stringify(newTags));
+    session.setItem('tags', JSON.stringify(tags));
   } else {
-    let totalTags = JSON.parse(currentTags).concat(newTags);
-    tempDB.setItem('tags', JSON.stringify(totalTags));
+    const totalTags = JSON.parse(currentTags).concat(tags);
+    session.setItem('tags', JSON.stringify(totalTags));
   }
 }
 
@@ -65,10 +41,12 @@ function addTag() {
  * a click handler to remove the target tag from the UI and `sessionStorage`
  */
 function killPill() {
-  let tag = $(this).parent().find('.c-tag-pill-data')[0].innerText;
-  let tempDB = window.sessionStorage;
-  let tags = JSON.parse(tempDB.getItem('tags'));
-  tempDB.setItem('tags', JSON.stringify(tags.filter((x) => x !== tag)));
+  const toKill = $(this).parent().find('.c-tag-pill-data')[0].innerText;
+  const session = window.sessionStorage;
+  const sessionValue = session.getItem('tags');
+  if (!sessionValue) return;
+  const tags = JSON.parse(sessionValue);
+  session.setItem('tags', JSON.stringify(tags.filter((tag) => tag !== toKill)));
   $(this).parent().remove();
 }
 
@@ -76,21 +54,25 @@ function killPill() {
  * the main logic function to help decide where/what to eat
  */
 function decideToEat() {
-  let db = Object.values(window.localStorage).map((x) => JSON.parse(x));
-  let tempDB = window.sessionStorage;
-  let tags = JSON.parse(tempDB.getItem('tags'));
-  let type = tempDB.getItem('innout').toLowerCase();
+  const db = Object.values(window.localStorage).map((x) => JSON.parse(x));
+  const session = window.sessionStorage;
+  const sessionValue = session.getItem('tags');
+  if (!sessionValue) return;
+  const tags = JSON.parse(sessionValue);
+  const type = session.getItem('innout')?.toLowerCase();
   // remove entries that aren't the selected type
   let results = db.filter((entry) => entry.tags.map((tag) => tag.toLowerCase()).includes(type));
   // remove entries that don't have the desired tags
-  if (tags && tags.length > 0)
-    results = results.filter((x) => x.tags.some((y) => tags.includes(y)));
+  if (tags && !!tags.length)
+    results = results.filter((result) => result.tags.some((tag) => tags.includes(tag)));
 
-  let rand = results.map((x) => x.name)[Math.floor(Math.random() * results.length)] || 'Nothing...';
+  const fallback = 'Nothing...';
+  const rand =
+    results.map((result) => result.name)[Math.floor(Math.random() * results.length)] || fallback;
   // <h1 class="display-4"></h1>
 
   $('#resultsArea').empty().append(`<h1 class="display-4">${rand}</h1>`);
-  if (rand === 'Nothing...') $('#resultsArea').append(`<p>No meals matched the type and tags</p>`);
+  if (rand === fallback) $('#resultsArea').append(`<p>No meals matched the type and tags</p>`);
 }
 
 /**
