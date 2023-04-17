@@ -28,6 +28,7 @@ function addMealOption() {
   const [type] = valToStrings($('#typeSelect').val());
   if (!name || !type) return;
   const tags = valToStrings($('#tagInput').val());
+  // TODO don't add this as a tag. add it as a prop
   tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
   const row = { name, tags };
   window.localStorage.setItem(row.name, JSON.stringify(row));
