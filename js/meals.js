@@ -25,8 +25,8 @@ function addMealOption() {
   let tags = $('#tagInput')
     .val()
     .split(',')
-    .map(x => x.trim())
-    .filter(x => x.length > 0);
+    .map((x) => x.trim())
+    .filter((x) => x.length > 0);
   tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
   let row = {
     name: $('#mealInput').val(),
@@ -69,10 +69,10 @@ function confirmClearLocalStorage() {
  * gets data from `localStorage` and populates `#mealsTable` with "jsx"
  */
 function loadTable() {
-  let db = Object.values(window.localStorage).map(x => JSON.parse(x));
+  let db = Object.values(window.localStorage).map((x) => JSON.parse(x));
   let table = $('#mealsTable');
   table.empty();
-  db.forEach(row => {
+  db.forEach((row) => {
     table.append(`<tr class="c-clickable">
             <td>${row.name}</td>
             <td>${row.tags.join(', ')}</td>
@@ -108,7 +108,7 @@ function pillTML(tag) {
  */
 function addTag() {
   let newTags = $('#modalAddTagInput').val().split(',');
-  newTags.forEach(tag => {
+  newTags.forEach((tag) => {
     $('#editModalTagList').append(pillTML(tag));
   });
   $('.c-tag-pill-delete').click(killPill);
@@ -134,7 +134,7 @@ function editRow() {
   $('#modalMealNameInput').attr('placeholder', mealData.name);
   let list = $('#editModalTagList');
   list.empty();
-  mealData.tags.forEach(tag => {
+  mealData.tags.forEach((tag) => {
     $('#editModalTagList').append(pillTML(tag));
   });
   $('.c-tag-pill-delete').click(killPill);

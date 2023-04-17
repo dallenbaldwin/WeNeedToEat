@@ -43,9 +43,9 @@ function addTag() {
   let newTags = $('#tagInput')
     .val()
     .split(',')
-    .map(x => x.trim())
-    .filter(x => x.length > 0);
-  newTags.forEach(tag => {
+    .map((x) => x.trim())
+    .filter((x) => x.length > 0);
+  newTags.forEach((tag) => {
     $('#filterTagList').append(pillTML(tag));
   });
   $('.c-tag-pill-delete').click(killPill);
@@ -68,7 +68,7 @@ function killPill() {
   let tag = $(this).parent().find('.c-tag-pill-data')[0].innerText;
   let tempDB = window.sessionStorage;
   let tags = JSON.parse(tempDB.getItem('tags'));
-  tempDB.setItem('tags', JSON.stringify(tags.filter(x => x !== tag)));
+  tempDB.setItem('tags', JSON.stringify(tags.filter((x) => x !== tag)));
   $(this).parent().remove();
 }
 
@@ -76,25 +76,21 @@ function killPill() {
  * the main logic function to help decide where/what to eat
  */
 function decideToEat() {
-  let db = Object.values(window.localStorage).map(x => JSON.parse(x));
+  let db = Object.values(window.localStorage).map((x) => JSON.parse(x));
   let tempDB = window.sessionStorage;
   let tags = JSON.parse(tempDB.getItem('tags'));
   let type = tempDB.getItem('innout').toLowerCase();
   // remove entries that aren't the selected type
-  let results = db.filter(entry =>
-    entry.tags.map(tag => tag.toLowerCase()).includes(type)
-  );
+  let results = db.filter((entry) => entry.tags.map((tag) => tag.toLowerCase()).includes(type));
   // remove entries that don't have the desired tags
   if (tags && tags.length > 0)
-    results = results.filter(x => x.tags.some(y => tags.includes(y)));
+    results = results.filter((x) => x.tags.some((y) => tags.includes(y)));
 
-  let rand =
-    results.map(x => x.name)[Math.floor(Math.random() * results.length)] || 'Nothing...';
+  let rand = results.map((x) => x.name)[Math.floor(Math.random() * results.length)] || 'Nothing...';
   // <h1 class="display-4"></h1>
 
   $('#resultsArea').empty().append(`<h1 class="display-4">${rand}</h1>`);
-  if (rand === 'Nothing...')
-    $('#resultsArea').append(`<p>No meals matched the type and tags</p>`);
+  if (rand === 'Nothing...') $('#resultsArea').append(`<p>No meals matched the type and tags</p>`);
 }
 
 /**
@@ -138,6 +134,6 @@ function getInnout() {
 function populateTags() {
   let tags = window.sessionStorage.getItem('tags');
   if (tags === null) return;
-  JSON.parse(tags).forEach(tag => $('#filterTagList').append(pillTML(tag)));
+  JSON.parse(tags).forEach((tag) => $('#filterTagList').append(pillTML(tag)));
   $('.c-tag-pill-delete').click(killPill);
 }

@@ -19,5 +19,13 @@
     "@parcel/transformer-webmanifest": "^2.8.3",
     "@types/jquery": "^3.5.16",
     "parcel": "^2.8.3"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "tabWidth": 2,
+    "printWidth": 100,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "semi": true
   }
 }
