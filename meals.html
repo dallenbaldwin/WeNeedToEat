@@ -4,10 +4,7 @@
     <title>Meal Options</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -50,12 +47,8 @@
               This will remove all your meal ideas. Are you sure you want to continue?
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                Cancel
-              </button>
-              <button id="confirmClearBtn" type="button" class="btn btn-danger">
-                Yes
-              </button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button id="confirmClearBtn" type="button" class="btn btn-danger">Yes</button>
             </div>
           </div>
         </div>
@@ -78,6 +71,7 @@
               </button>
             </div>
             <div class="modal-body">
+              <input type="text" id="modalMealTypeInput" name="modalMealTypeInput" hidden="true" />
               <div class="form-group">
                 <label for="modalMealNameInput">Meal Name</label>
                 <input
@@ -87,9 +81,7 @@
                   class="form-control"
                   aria-describedby="modalMealNameHelp"
                 />
-                <small id="modalMealNameHelp" class="text-muted"
-                  >Type in the new meal name</small
-                >
+                <small id="modalMealNameHelp" class="text-muted">Type in the new meal name</small>
               </div>
               <div class="form-group">
                 <label for="modalAddTagInput">Tags</label>
@@ -107,15 +99,9 @@
               <div id="editModalTagList"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                Close
-              </button>
-              <button id="deleteMealBtn" type="button" class="btn btn-warning">
-                Delete
-              </button>
-              <button id="saveMealBtn" type="button" class="btn btn-primary">
-                Save changes
-              </button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button id="deleteMealBtn" type="button" class="btn btn-warning">Delete</button>
+              <button id="saveMealBtn" type="button" class="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>
@@ -176,8 +162,7 @@
               aria-describedby="tagHelp"
             />
             <small id="tagHelp" class="text-muted"
-              >What are some tags to help decide later? Enter a comma separated
-              list</small
+              >What are some tags to help decide later? Enter a comma separated list</small
             >
           </div>
           <button id="doneBtn" type="button" class="btn btn-primary">Done</button>
@@ -186,11 +171,7 @@
           <div class="row">
             <div class="col-sm-6"><h1>Meals</h1></div>
             <div class="col-sm-6">
-              <button
-                id="resetBtn"
-                type="button"
-                class="btn btn-warning mb-2 mt-2 c-right"
-              >
+              <button id="resetBtn" type="button" class="btn btn-warning mb-2 mt-2 c-right">
                 Start Over
               </button>
             </div>
@@ -200,6 +181,7 @@
               <thead>
                 <tr>
                   <th>Meal</th>
+                  <th>Type</th>
                   <th>Tags</th>
                 </tr>
               </thead>
@@ -234,9 +216,7 @@
     ></script>
     <script type="module">
       import { init } from './js/meals.js';
-      $(document).ready(() => {
-        init();
-      });
+      $(document).ready(() => init());
     </script>
   </body>
 </html>

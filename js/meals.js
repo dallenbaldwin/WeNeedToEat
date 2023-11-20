@@ -1,3 +1,7 @@
+// @ts-check
+
+import { getMeals, pillTML, valToStrings } from './shared.js';
+
 /**
  * an initializer function for the meals page
  */
@@ -20,19 +24,14 @@ export function init() {
  * @returns
  */
 function addMealOption() {
-  if ($('#mealInput').val() === '' || $('#typeSelect').val() === '') return;
-  let type = $('#typeSelect').val();
-  let tags = $('#tagInput')
-    .val()
-    .split(',')
-    .map(x => x.trim())
-    .filter(x => x.length > 0);
-  tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
-  let row = {
-    name: $('#mealInput').val(),
-    tags: tags,
-  };
-  window.localStorage.setItem(row.name, JSON.stringify(row));
+  const [name] = valToStrings($('#mealInput').val());
+  const [selectedType] = valToStrings($('#typeSelect').val());
+  if (!name || !selectedType) return;
+  setMeal({
+    name,
+    tags: valToStrings($('#tagInput').val()),
+    type: selectedType === 'in' ? 'Cook at Home' : 'Restaurant',
+  });
   location.reload();
 }
 
@@ -43,7 +42,8 @@ function addMealOption() {
  * this will reload the page
  */
 function deleteMeal() {
-  let key = $('#modalMealNameInput').attr('placeholder');
+  const key = $('#modalMealNameInput').attr('placeholder');
+  if (!key) return;
   window.localStorage.removeItem(key);
   location.reload();
 }
@@ -52,6 +52,7 @@ function deleteMeal() {
  * toggles the `#clearDBModal` modal
  */
 function clearLocalStorage() {
+  // @ts-expect-error bootstrap wants to you access the modal this way
   $('#clearDBModal').modal('toggle');
 }
 
@@ -69,37 +70,25 @@ function confirmClearLocalStorage() {
  * gets data from `localStorage` and populates `#mealsTable` with "jsx"
  */
 function loadTable() {
-  let db = Object.values(window.localStorage).map(x => JSON.parse(x));
-  let table = $('#mealsTable');
-  table.empty();
-  db.forEach(row => {
-    table.append(`<tr class="c-clickable">
-            <td>${row.name}</td>
-            <td>${row.tags.join(', ')}</td>
-         </tr>`);
+  const meals = getMeals();
+  // fix any exisiting values where the type is in the tags
+  meals.forEach((meal) => {
+    const index = meal.tags.findIndex((tag) => tag === 'Restaurant' || tag === 'Cook at Home');
+    if (index === -1) return;
+    const [type] = meal.tags.splice(index, 1);
+    // @ts-expect-error we're checking it above
+    meal.type = type;
+    setMeal(meal);
   });
-}
-
-/**
- * returns the "jsx" for a pill style tag
- *
- * tags with zero length are ignored
- *
- * if the tag is `Restaurant` or `Cook at Home`, it won't be deletable
- *
- * @param {string} tag the text to put inside the tag
- * @returns nothing or poor man's jsx
- */
-function pillTML(tag) {
-  if (tag.length === 0) return;
-  return `<li class="c-tag-pill">
-         <span class="c-tag-pill-data">${tag}</span>
-         ${
-           tag === 'Restaurant' || tag === 'Cook at Home'
-             ? ''
-             : `<span class="c-tag-pill-delete">&times;</span>`
-         }
-      </li>`;
+  const table = $('#mealsTable');
+  table.empty();
+  meals.forEach(({ name, tags, type }) => {
+    table.append(`<tr class="c-clickable">
+  <td>${name}</td>
+  <td>${type}</td>
+  <td>${tags.join(', ')}</td>
+</tr>`);
+  });
 }
 
 /**
@@ -107,10 +96,8 @@ function pillTML(tag) {
  * defined with `#modalAddTagInput`
  */
 function addTag() {
-  let newTags = $('#modalAddTagInput').val().split(',');
-  newTags.forEach(tag => {
-    $('#editModalTagList').append(pillTML(tag));
-  });
+  const tags = valToStrings($('#modalAddTagInput').val());
+  tags.forEach((tag) => $('#editModalTagList').append(pillTML(tag)));
   $('.c-tag-pill-delete').click(killPill);
   $('#modalAddTagInput').val('');
 }
@@ -129,14 +116,15 @@ function killPill() {
  * binds {@link killPill} to each pill generated with {@link pillTML}
  */
 function editRow() {
+  // @ts-expect-error bootstrap wants to you access the modal this way
   $('#editRecordModal').modal('toggle');
-  let mealData = JSON.parse(window.localStorage.getItem($(this).children()[0].innerText));
-  $('#modalMealNameInput').attr('placeholder', mealData.name);
-  let list = $('#editModalTagList');
+  const meal = getMeal($(this).children()[0].innerText);
+  if (!meal) return;
+  $('#modalMealNameInput').attr('placeholder', meal.name);
+  $('#modalMealTypeInput').val(meal.type);
+  const list = $('#editModalTagList');
   list.empty();
-  mealData.tags.forEach(tag => {
-    $('#editModalTagList').append(pillTML(tag));
-  });
+  meal.tags.forEach((tag) => $('#editModalTagList').append(pillTML(tag)));
   $('.c-tag-pill-delete').click(killPill);
 }
 
@@ -147,20 +135,54 @@ function editRow() {
  * this will reload the page
  */
 function saveEdits() {
-  let input = $('#modalMealNameInput');
-  let mealName = input.val() === '' ? input.attr('placeholder') : input.val();
-  let tags = [];
+  const nameInput = $('#modalMealNameInput');
+  const [inputVal] = valToStrings(nameInput.val());
+  const namePlaceholder = nameInput.attr('placeholder');
+  const name = !inputVal ? namePlaceholder : inputVal;
+  if (!name) throw new Error('name is undefined!');
+
+  const [type] = valToStrings($('#modalMealTypeInput').val());
+  if (!type) throw new Error('type is undefined!');
+
+  const tags = [];
   $('#editModalTagList')
     .find('.c-tag-pill-data')
     .each(function () {
       tags.push($(this).text());
     });
-  let newData = {
-    name: mealName,
-    tags: tags,
-  };
-  let db = window.localStorage;
-  db.removeItem(input.attr('placeholder'));
-  db.setItem(mealName, JSON.stringify(newData));
+
+  window.localStorage.removeItem(name);
+  setMeal({ name, tags, type: type === 'Cook at Home' ? 'Cook at Home' : 'Restaurant' });
   location.reload();
+}
+
+/**
+ * gets an item from local storage
+ *
+ * @param {string} name
+ */
+export function getMeal(name) {
+  const item = window.localStorage.getItem(name);
+  if (!item) return null;
+  const parsed = JSON.parse(item);
+  return {
+    name: `${parsed.name}`,
+    /** @type {'Cook at Home' | 'Restaurant'} */
+    type: parsed.type === 'Cook at Home' ? 'Cook at Home' : 'Restaurant',
+    /** @type {string[]} */
+    tags: Array.isArray(parsed.tags) ? parsed.tags.map((t) => `${t}`) : [],
+  };
+}
+
+/**
+ * sets the supplied value into local storage
+ *
+ * @param {{
+ *  name: string,
+ *  tags: string[],
+ *  type: 'Restaurant' | 'Cook at Home'
+ * }} value the data item
+ */
+export function setMeal(value) {
+  window.localStorage.setItem(value.name, JSON.stringify(value));
 }
