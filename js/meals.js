@@ -1,6 +1,6 @@
 // @ts-check
 
-import { pillTML, valToStrings } from './shared.js';
+import { getMeals, pillTML, valToStrings } from './shared.js';
 
 /**
  * an initializer function for the meals page
@@ -25,13 +25,13 @@ export function init() {
  */
 function addMealOption() {
   const [name] = valToStrings($('#mealInput').val());
-  const [type] = valToStrings($('#typeSelect').val());
-  if (!name || !type) return;
-  const tags = valToStrings($('#tagInput').val());
-  // TODO don't add this as a tag. add it as a prop
-  tags.push(type === 'in' ? 'Cook at Home' : 'Restaurant');
-  const row = { name, tags };
-  window.localStorage.setItem(row.name, JSON.stringify(row));
+  const [selectedType] = valToStrings($('#typeSelect').val());
+  if (!name || !selectedType) return;
+  setMeal({
+    name,
+    tags: valToStrings($('#tagInput').val()),
+    type: selectedType === 'in' ? 'Cook at Home' : 'Restaurant',
+  });
   location.reload();
 }
 
@@ -70,14 +70,24 @@ function confirmClearLocalStorage() {
  * gets data from `localStorage` and populates `#mealsTable` with "jsx"
  */
 function loadTable() {
-  let db = Object.values(window.localStorage).map((x) => JSON.parse(x));
-  let table = $('#mealsTable');
+  const meals = getMeals();
+  // fix any exisiting values where the type is in the tags
+  meals.forEach((meal) => {
+    const index = meal.tags.findIndex((tag) => tag === 'Restaurant' || tag === 'Cook at Home');
+    if (index === -1) return;
+    const [type] = meal.tags.splice(index, 1);
+    //@ts-expect-error we're checking it above
+    meal.type = type;
+    setMeal(meal);
+  });
+  const table = $('#mealsTable');
   table.empty();
-  db.forEach((row) => {
+  meals.forEach(({ name, tags, type }) => {
     table.append(`<tr class="c-clickable">
-            <td>${row.name}</td>
-            <td>${row.tags.join(', ')}</td>
-         </tr>`);
+  <td>${name}</td>
+  <td>${type}</td>
+  <td>${tags.join(', ')}</td>
+</tr>`);
   });
 }
 
@@ -108,13 +118,13 @@ function killPill() {
 function editRow() {
   // @ts-expect-error bootstrap wants to you access the modal this way
   $('#editRecordModal').modal('toggle');
-  const key = window.localStorage.getItem($(this).children()[0].innerText);
-  if (!key) return;
-  const mealData = JSON.parse(key);
-  $('#modalMealNameInput').attr('placeholder', mealData.name);
+  const meal = getMeal($(this).children()[0].innerText);
+  if (!meal) return;
+  $('#modalMealNameInput').attr('placeholder', meal.name);
+  $('#modalMealTypeInput').val(meal.type);
   const list = $('#editModalTagList');
   list.empty();
-  mealData.tags.forEach((tag) => $('#editModalTagList').append(pillTML(tag)));
+  meal.tags.forEach((tag) => $('#editModalTagList').append(pillTML(tag)));
   $('.c-tag-pill-delete').click(killPill);
 }
 
@@ -125,19 +135,54 @@ function editRow() {
  * this will reload the page
  */
 function saveEdits() {
-  const input = $('#modalMealNameInput');
-  const [inputVal] = valToStrings(input.val());
-  const placeholder = input.attr('placeholder');
-  const name = !inputVal ? placeholder : inputVal;
+  const nameInput = $('#modalMealNameInput');
+  const [inputVal] = valToStrings(nameInput.val());
+  const namePlaceholder = nameInput.attr('placeholder');
+  const name = !inputVal ? namePlaceholder : inputVal;
   if (!name) throw new Error('name is undefined!');
+
+  const [type] = valToStrings($('#modalMealTypeInput').val());
+  if (!type) throw new Error('type is undefined!');
+
   const tags = [];
   $('#editModalTagList')
     .find('.c-tag-pill-data')
     .each(function () {
       tags.push($(this).text());
     });
-  const db = window.localStorage;
-  db.removeItem(name);
-  db.setItem(name, JSON.stringify({ name, tags }));
+
+  window.localStorage.removeItem(name);
+  setMeal({ name, tags, type: type === 'Cook at Home' ? 'Cook at Home' : 'Restaurant' });
   location.reload();
+}
+
+/**
+ * gets an item from local storage
+ *
+ * @param {string} name
+ */
+export function getMeal(name) {
+  const item = window.localStorage.getItem(name);
+  if (!item) return null;
+  const parsed = JSON.parse(item);
+  return {
+    name: `${parsed.name}`,
+    /** @type {'Cook at Home' | 'Restaurant'} */
+    type: parsed.type === 'Cook at Home' ? 'Cook at Home' : 'Restaurant',
+    /** @type {string[]} */
+    tags: Array.isArray(parsed.tags) ? parsed.tags.map((t) => `${t}`) : [],
+  };
+}
+
+/**
+ * sets the supplied value into local storage
+ *
+ * @param {{
+ *  name: string,
+ *  tags: string[],
+ *  type: 'Restaurant' | 'Cook at Home'
+ * }} value the data item
+ */
+export function setMeal(value) {
+  window.localStorage.setItem(value.name, JSON.stringify(value));
 }

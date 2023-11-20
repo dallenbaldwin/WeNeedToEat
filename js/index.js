@@ -1,6 +1,6 @@
 //@ts-check
 
-import { pillTML, valToStrings } from './shared.js';
+import { getMeals, pillTML, valToStrings } from './shared.js';
 
 /**
  * initializing function for the main page
@@ -22,19 +22,13 @@ export function init() {
  * - adds tags to `sessionStorage`
  */
 function addTag() {
-  const tags = valToStrings($('#tagInput').val());
-  tags.forEach((tag) => $('#filterTagList').append(pillTML(tag)));
+  const tagInput = valToStrings($('#tagInput').val());
+  tagInput.forEach((tag) => $('#filterTagList').append(pillTML(tag)));
   $('.c-tag-pill-delete').click(killPill);
   $('#tagInput').val('');
   // add new tags to the existing tags
-  const session = window.sessionStorage;
-  const currentTags = session.getItem('tags');
-  if (currentTags === null) {
-    session.setItem('tags', JSON.stringify(tags));
-  } else {
-    const totalTags = JSON.parse(currentTags).concat(tags);
-    session.setItem('tags', JSON.stringify(totalTags));
-  }
+  const { tags } = getSession();
+  setTags(tags.concat(...tagInput));
 }
 
 /**
@@ -42,11 +36,8 @@ function addTag() {
  */
 function killPill() {
   const toKill = $(this).parent().find('.c-tag-pill-data')[0].innerText;
-  const session = window.sessionStorage;
-  const sessionValue = session.getItem('tags');
-  if (!sessionValue) return;
-  const tags = JSON.parse(sessionValue);
-  session.setItem('tags', JSON.stringify(tags.filter((tag) => tag !== toKill)));
+  const { tags } = getSession();
+  setTags(tags.filter((tag) => tag !== toKill));
   $(this).parent().remove();
 }
 
@@ -54,12 +45,11 @@ function killPill() {
  * the main logic function to help decide where/what to eat
  */
 function decideToEat() {
-  const db = Object.values(window.localStorage).map((x) => JSON.parse(x));
-  const session = window.sessionStorage;
-  const sessionValue = session.getItem('tags');
-  if (!sessionValue) return;
-  const tags = JSON.parse(sessionValue);
-  const type = session.getItem('innout')?.toLowerCase();
+  const db = getMeals();
+  const { tags, type } = getSession();
+
+  console.log({ db, tags, type });
+
   // remove entries that aren't the selected type
   let results = db.filter((entry) => entry.tags.map((tag) => tag.toLowerCase()).includes(type));
   // remove entries that don't have the desired tags
@@ -82,7 +72,7 @@ function decideToEat() {
 function eatIn() {
   $('#eatInBtn').removeClass('btn-outline-primary').addClass('btn-primary');
   $('#eatOutBtn').removeClass('btn-primary').addClass('btn-outline-primary');
-  window.sessionStorage.setItem('innout', 'Cook at Home');
+  setInnout('Cook at Home');
 }
 
 /**
@@ -92,7 +82,7 @@ function eatIn() {
 function eatOut() {
   $('#eatOutBtn').removeClass('btn-outline-primary').addClass('btn-primary');
   $('#eatInBtn').removeClass('btn-primary').addClass('btn-outline-primary');
-  window.sessionStorage.setItem('innout', 'Restaurant');
+  setInnout('Restaurant');
 }
 
 /**
@@ -100,22 +90,44 @@ function eatOut() {
  * value of `innout`
  */
 function getInnout() {
-  let innout = window.sessionStorage.getItem('innout');
-  if (innout === null) {
-    eatIn();
-  } else if (innout === 'Cook at Home') {
-    eatIn();
-  } else if (innout === 'Restaurant') {
-    eatOut();
-  }
+  const { type } = getSession();
+  if (type === 'Cook at Home') eatIn();
+  else if (type === 'Restaurant') eatOut();
 }
 
 /**
  * grabs `tags` from `sessionStorage` and populates them in the UI
  */
 function populateTags() {
-  let tags = window.sessionStorage.getItem('tags');
-  if (tags === null) return;
-  JSON.parse(tags).forEach((tag) => $('#filterTagList').append(pillTML(tag)));
+  const { tags } = getSession();
+  tags.forEach((tag) => $('#filterTagList').append(pillTML(tag)));
   $('.c-tag-pill-delete').click(killPill);
+}
+
+/**
+ * gets session storage info
+ */
+export function getSession() {
+  const sessionTags = window.sessionStorage.getItem('tags');
+  /** @type string[] */
+  const tags = sessionTags ? JSON.parse(sessionTags) : [];
+
+  const sessionType = window.sessionStorage.getItem('innout');
+  /** @type {'Cook at Home' | 'Restaurant' | null } */
+  const type = sessionType === 'Cook at Home' ? sessionType : 'Restaurant';
+
+  return { tags, type };
+}
+
+/**
+ * @param {string[]} value
+ */
+export function setTags(value) {
+  window.sessionStorage.setItem('tags', JSON.stringify(value));
+}
+/**
+ * @param {'Cook at Home' | 'Restaurant'} value
+ */
+export function setInnout(value) {
+  window.sessionStorage.setItem('innout', value);
 }

@@ -1,6 +1,17 @@
 // @ts-check
 
 /**
+ * pulls the database from local storage
+ */
+export function getMeals() {
+  /**
+   * @type Array<{ name: string, tags: string[], type: 'Restaurant' | 'Cook at Home' }>
+   */
+  const meals = Object.values(window.localStorage).map((x) => JSON.parse(x));
+  return meals;
+}
+
+/**
  * creates the html for a pill shaped tag
  *
  * - an li will be the container and will have the `c-tag-pill` class
@@ -12,8 +23,6 @@
  */
 export function pillTML(tag) {
   if (tag.length === 0) return '';
-  const permanent = ['Restaurant', 'Cook at Home'].includes(tag);
-  if (permanent) return '';
   return `<li class="c-tag-pill">
     <span class="c-tag-pill-data">${tag}</span>
     <span class="c-tag-pill-delete c-clickable">&times;</span>
@@ -25,17 +34,15 @@ export function pillTML(tag) {
  *
  * if a string comes back, it will try to be split on a comma
  *
- * @param {string | number | string[] | undefined} val the value that comes back from jQuery's `val()` method
+ * @param value {string | number | string[] | undefined} value the value that comes back from jQuery's `val()` method
  */
-export function valToStrings(val) {
-  if (!val) return [];
-  let parsed;
-  if (typeof val === 'number') parsed = [val.toString()];
-  else if (!Array.isArray(val))
-    parsed = val
+export function valToStrings(value = []) {
+  if (Array.isArray(value)) return value;
+  else if (typeof value === 'number') return [value.toString()];
+  else if (typeof value === 'string')
+    return value
       .split(',')
       .map((v) => v.trim())
       .filter((v) => !!v.length);
-  else parsed = val;
-  return parsed;
+  return [];
 }

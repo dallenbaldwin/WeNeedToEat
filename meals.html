@@ -71,6 +71,7 @@
               </button>
             </div>
             <div class="modal-body">
+              <input type="text" id="modalMealTypeInput" name="modalMealTypeInput" hidden="true" />
               <div class="form-group">
                 <label for="modalMealNameInput">Meal Name</label>
                 <input
@@ -180,6 +181,7 @@
               <thead>
                 <tr>
                   <th>Meal</th>
+                  <th>Type</th>
                   <th>Tags</th>
                 </tr>
               </thead>
@@ -214,9 +216,7 @@
     ></script>
     <script type="module">
       import { init } from './js/meals.js';
-      $(document).ready(() => {
-        init();
-      });
+      $(document).ready(() => init());
     </script>
   </body>
 </html>
