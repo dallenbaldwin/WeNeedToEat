@@ -48,18 +48,17 @@ function decideToEat() {
   const meals = getMeals();
   const { tags, type } = getSession();
 
-  const results = meals
-    .filter((meal) => meal.type === type)
-    .filter((meal) => {
-      if (!tags.length) return true;
-      return meal.tags.some((mealTag) =>
-        tags.some((tag) => {
-          const lowerMealTag = mealTag.toLowerCase();
-          const lowerTag = tag.toLowerCase();
-          return lowerMealTag.includes(lowerTag) || lowerTag.includes(lowerMealTag);
-        })
-      );
-    });
+  const results = meals.filter((meal) => {
+    if (meal.type !== type) return false;
+    if (!tags.length) return true;
+    return meal.tags.some((mealTag) =>
+      tags.some((tag) => {
+        const lowerMealTag = mealTag.toLowerCase();
+        const lowerTag = tag.toLowerCase();
+        return lowerMealTag.includes(lowerTag) || lowerTag.includes(lowerMealTag);
+      })
+    );
+  });
 
   const fallback = 'Nothing...';
   const decision =
