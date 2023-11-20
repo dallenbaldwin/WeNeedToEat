@@ -45,24 +45,28 @@ function killPill() {
  * the main logic function to help decide where/what to eat
  */
 function decideToEat() {
-  const db = getMeals();
+  const meals = getMeals();
   const { tags, type } = getSession();
 
-  console.log({ db, tags, type });
-
-  // remove entries that aren't the selected type
-  let results = db.filter((entry) => entry.tags.map((tag) => tag.toLowerCase()).includes(type));
-  // remove entries that don't have the desired tags
-  if (tags && !!tags.length)
-    results = results.filter((result) => result.tags.some((tag) => tags.includes(tag)));
+  const results = meals
+    .filter((meal) => meal.type === type)
+    .filter((meal) => {
+      if (!tags.length) return true;
+      return meal.tags.some((mealTag) =>
+        tags.some((tag) => {
+          const lowerMealTag = mealTag.toLowerCase();
+          const lowerTag = tag.toLowerCase();
+          return lowerMealTag.includes(lowerTag) || lowerTag.includes(lowerMealTag);
+        })
+      );
+    });
 
   const fallback = 'Nothing...';
-  const rand =
+  const decision =
     results.map((result) => result.name)[Math.floor(Math.random() * results.length)] || fallback;
-  // <h1 class="display-4"></h1>
 
-  $('#resultsArea').empty().append(`<h1 class="display-4">${rand}</h1>`);
-  if (rand === fallback) $('#resultsArea').append(`<p>No meals matched the type and tags</p>`);
+  $('#resultsArea').empty().append(`<h1 class="display-4">${decision}</h1>`);
+  if (decision === fallback) $('#resultsArea').append(`<p>No meals matched the type and tags</p>`);
 }
 
 /**
