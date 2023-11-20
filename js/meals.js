@@ -76,7 +76,7 @@ function loadTable() {
     const index = meal.tags.findIndex((tag) => tag === 'Restaurant' || tag === 'Cook at Home');
     if (index === -1) return;
     const [type] = meal.tags.splice(index, 1);
-    //@ts-expect-error we're checking it above
+    // @ts-expect-error we're checking it above
     meal.type = type;
     setMeal(meal);
   });

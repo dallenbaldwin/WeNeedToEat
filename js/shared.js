@@ -4,10 +4,16 @@
  * pulls the database from local storage
  */
 export function getMeals() {
-  /**
-   * @type Array<{ name: string, tags: string[], type: 'Restaurant' | 'Cook at Home' }>
-   */
-  const meals = Object.values(window.localStorage).map((x) => JSON.parse(x));
+  const meals = Object.values(window.localStorage).map((value) => {
+    const parsed = JSON.parse(value);
+    return {
+      name: `${parsed.name}`,
+      /** @type {string[]} */
+      tags: Array.isArray(parsed.tags) ? parsed.tags : [],
+      /** @type {'Cook at Home' | 'Restaurant'} */
+      type: parsed.type === 'Cook at Home' ? 'Cook at Home' : 'Restaurant',
+    };
+  });
   return meals;
 }
 
