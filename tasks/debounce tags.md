@@ -1,0 +1,1 @@
+currently you have to hit enter/leave a text input area to add new tags. maybe people should be able to debounce new tags instead
