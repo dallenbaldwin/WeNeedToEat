@@ -11,13 +11,14 @@
             "id": "7ed79dd1fac59145",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "tasks/_tasks.base",
-                "viewName": "Table"
+                "file": "README.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "_tasks"
+              "icon": "lucide-file",
+              "title": "README"
             }
           }
         ]
@@ -93,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "tasks/_tasks.base",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for _tasks"
+              "title": "Backlinks for README"
             }
           },
           {
@@ -112,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "tasks/_tasks.base",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from _tasks"
+              "title": "Outgoing links from README"
             }
           },
           {
@@ -155,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "tasks/_tasks.base",
+                "file": "README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of _tasks"
+              "title": "Outline of README"
             }
           }
         ]
@@ -184,11 +185,16 @@
   },
   "active": "7ed79dd1fac59145",
   "lastOpenFiles": [
+    "favicon-32x32.png",
+    "android-chrome-192x192.png",
+    "android-chrome-512x512.png",
+    "apple-touch-icon.png",
+    "favicon-16x16.png",
+    "README.md",
+    "tasks/_tasks.base",
     "tasks/export meals to json.md",
     "tasks/debounce tags.md",
     "tasks/map feature.md",
-    "tasks/_tasks.base",
-    "README.md",
     "tasks"
   ]
 }
